@@ -1,0 +1,33 @@
+  {
+    "name" : "ZIP Extractor",
+    "version" : "version",
+    "manifest_version" : 2,
+    "description" : “Decompress ZIP files to Google Drive",
+    "container" : "GOOGLE_DRIVE",
+    "api_console_project_id" : "824911851129",
+    "gdrive_mime_types": {
+      "http://drive.google.com/intents/opendrivedoc": [
+        {
+          "type": ["application/zip", "application/x-zip", "application/x-zip-compressed", 
+          "application/vnd.google.drive.ext-type.zip"],
+          "href": "https://zip-extractor.appspot.com/index.html",
+          "title" : "Open",
+          "disposition" : "window"
+        }
+      ]
+    },
+    "icons": {
+      "16": "zip-extractor-icon-16.png",
+      "32": "zip-extractor-icon-32.png",
+      "48": "zip-extractor-icon-48.png",
+      "64": "zip-extractor-icon-64.png",
+      "128": "zip-extractor-icon-128.png",
+      "256": "zip-extractor-icon-256.png"
+    },
+    "app" : {
+      "launch" : {
+        "web_url" : "https://zip-extractor.appspot.com/index.html"
+      }
+    }
+  }
+ 
