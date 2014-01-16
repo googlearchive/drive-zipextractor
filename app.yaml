@@ -36,18 +36,7 @@ handlers:
 - url: /js/zip
   static_dir: js/zip
   secure: always
-    
-- url: /js/driveapi
-  static_dir: js/driveapi
-  secure: always    
 
-- url: /js/zipextractor
-  static_dir: js/zipextractor
-  secure: always
-    
-- url: /js/zipextractor/util
-  static_dir: js/zipextractor/util
-  secure: always
     
 skip_files:
 # Default patterns skipped by App Engine, which must be repeated since
