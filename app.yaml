@@ -19,6 +19,11 @@ handlers:
 - url: /favicon.ico
   static_files: favicon.png
   upload: favicon.png
+  secure: always
+
+- url: /google5f963f55367aa33e.html
+  static_files: google5f963f55367aa33e.html
+  upload: google5f963f55367aa33e.html
   secure: always  
 
 - url: /css
