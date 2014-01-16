@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+ <head>
+   <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+   
+    <title>ZIP Extractor - Extract ZIP Files to Google Drive</title>
+    
+    <link rel="stylesheet" type="text/css" href="css/zipextractor.css">
+
+    <script type="text/javascript" src="js/zip/zip.js"></script>
+    <script type="text/javascript" src="js/zip/mime-types.js"></script>
+    <script type="text/javascript" src="js/zipextractor/bootloader.js"></script>        
+    <script type="text/javascript" src="js/zipextractor/base.js"></script>
+    <script type="text/javascript" src="js/zipextractor/config.js"></script>
+    <script type="text/javascript" src="js/zipextractor/app.js"></script>
+    <script type="text/javascript" src="js/zipextractor/view.js"></script>
+    <script type="text/javascript" src="js/zipextractor/model.js"></script>
+    <script type="text/javascript" src="js/zipextractor/presenter.js"></script>
+    <script type="text/javascript" src="js/zipextractor/state.js"></script>
+    <script type="text/javascript" src="js/zipextractor/zipreader.js"></script>
+    <script type="text/javascript" src="js/zipextractor/session.js"></script>
+    <script type="text/javascript" src="js/zipextractor/table.js"></script>
+    <script type="text/javascript" src="js/driveapi/base.js"></script>
+    <script type="text/javascript" src="js/driveapi/filemanager.js"></script>
+    <script type="text/javascript" src="js/driveapi/authmanager.js"></script>
+    <script type="text/javascript" src="js/driveapi/appconfig.js"></script>
+    <script type="text/javascript" src="js/driveapi/urlstateparser.js"></script>
+    <script type="text/javascript" src="js/zipextractor/util/base.js"></script>
+    <script type="text/javascript" src="js/zipextractor/util/util.js"></script>
+    <script type="text/javascript" src="js/zipextractor/util/pickermanager.js"></script>    
+    <script type="text/javascript" src="js/zipextractor/util/asyncworkqueue.js"></script>
+    
+    <script type="text/javascript" src="https://apis.google.com/js/client.js?onload=onGapiClientLoad"></script>
+ </head>
+ 
+ <body onload="onBodyLoad();">
+
+  <div class="main-container">
+      <div class="header-container">
+          <div class="header-icon" style="display:inline-block;">
+            <img src="images/zip-extractor-icon-48.png" alt="ZIP Extractor" style="width:48px; height:48px;" />
+          </div>
+            <div class="header" style="display:inline-block;">
+                  <h1>ZIP Extractor</h1>
+                  <h2>Extract ZIP files to Google Drive</h2>
+            </div>
+      </div>
+        <div class="maincontent">
+          <hr>      
+           <div id="primaryStatusDiv" class="primaryStatusDiv" >
+               <div id="primaryStatusSpinner" class="primaryStatusSpinner">
+                   <img class="primaryStatusSpinnerImg" src="images/spinner.gif" alt="Loading..." />
+               </div>
+
+                <div class="primaryStatusText" style="display:inline-block;" id="primaryStatusText">
+                   Loading...
+               </div>               
+           </div>   
+           
+           <div id="filePickerDiv2" style="display: none;">
+                <input type="file" id="filePicker" accept=".zip, application/zip" style="display: none" />
+           </div>
+           
+           <div id="actionButtons">
+                <input class="button button-submit" type="button" id="authorizeButton" style="display: none" value="Authorize" />     
+                
+                <input class="button" type="button" id="downloadChromeButton" style="display: none" value="Download Chrome" />     
+                <input class="button" type="button" id="downloadFirefoxButton" style="display: none" value="Download Firefox" />     
+                <input class="button" type="button" id="downloadIeButton" style="display: none" value="Download Internet Explorer" />     
+                
+                <input class="button" type="button" id="cancelDownloadButton" style="display: none" value="Cancel" />     
+                <input class="button" type="button" id="chooseLocalFileButton" value="Choose ZIP file from Computer..." style="display: none"/>
+                <input class="button" type="button" id="chooseFromDriveButton" value="Choose ZIP file from Google Drive..." style="display: none" />       
+                <input class="button button-submit" type="button" id="extractNowButton" value="Extract now" style="display: none" />
+                <input class="button" type="button" id="changeDestinationFolderButton" value="Change destination folder..." style="display: none" />                
+                <input class="button" type="button" id="cancelSessionButton" value="Cancel" style="display: none" />
+                <input class="button" type="button" id="cancelExtractionButton" value="Cancel" style="display: none" />
+                
+                <input class="button button-red" type="button" id="retryErrorsButton" value="Retry errors" style="display: none" />
+                <input class="button button-submit" type="button" id="viewFilesButton" value="View extracted files" style="display: none" /> 
+                <input class="button button-share " type="button" id="shareFilesButton" value="Share" style="display: none" /> 
+                <input class="button" type="button" id="resetButton" value="Extract another ZIP file" style="display: none" /> 
+           </div>
+
+            <div id="primaryStatusProgressContainer" class="primaryStatusProgressContainer">
+               <div id="primaryStatusProgress" class="primaryStatusProgress progress-bar blue stripes" style="display:none;">             
+                  <span id="primaryStatusProgressBar" class="primaryStatusProgressBar"></span>
+               </div>
+            </div>
+            
+           <div id="fileTableDiv" class="fileTableDiv" style="display:none">
+             <hr>
+             <div id="fileTableHeader" class="fileTableHeader">
+                <div id="fileTableHeaderIcon" style="display:inline-block;">
+                    <img src="images/zip-extractor-icon-16.png" alt="ZIP File" style="width:16px; height:16px;" />
+                </div>           
+                
+                <div id="fileTableHeaderCaption" style="display:inline-block;">
+                </div>
+            </div>
+
+            <table id="fileTable" class="fileTable">
+              <tr class="tableHeaderRow">
+                <th style="white-space: nowrap;">
+                    <input type="checkbox" id="selectAllCheckbox" checked="checked" />
+                    <span>Name</span>
+                </th>
+                <th style="white-space: nowrap; min-width: 80px; width:80px">Size</th>
+                <th style="width: 100%">Status</th>
+              </tr>
+            </table>
+           </div> 
+        </div>
+
+      <div class="footer">
+        <div style="display:inline-block; color: #555;">
+          Copyright &copy; 2013-2014. All rights reserved.
+          For support contact <a href="mailto:zipextractor@gmail.com?subject=Zip%20Extractor%20support">zipextractor@gmail.com</a>
+        </div>
+        <div style="float:right; display:inline-block; color:#555; margin-right:16px;">
+          Version 0.5 Beta
+        </div>  
+      </div>  
+    </div>
+ </body>
+</html>
