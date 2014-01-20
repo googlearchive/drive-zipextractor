@@ -19,16 +19,18 @@ driveapi.FileManager.ErrorType = {
     UNKNOWN: 'unknown' // default
 };
 
+
 driveapi.FileManager.ErrorMessage = {
     FORBIDDEN: 'There were too many recent requests; please wait a while and try again.', // 403
     FILE_NOT_FOUND: 'Unable to find the specified file; please check that it exists and try again.', // 404
     DEADLINE_EXCEEDED: 'The server took too long to respond; please try again.', // 503
-    SERVER_ERROR: 'An internal server error occurred; please report this error to the developers.', // 500
+    SERVER_ERROR: 'An internal server error occurred; please try again.', // 500
     AUTH_ERROR: 'An authorization error occured; please refresh this page and re-authorize.', // 401
-    BAD_REQUEST: 'The server request could not be understood; please report this error to the developers.', // 400
+    BAD_REQUEST: 'The server request could not be understood; please try again or report this error to the developers.', // 400
     REQUEST_ABORTED: 'The user canceled the request when it was still in progress.', // 0
-    UNKNOWN: 'An unknown error occurred; please report this error to the developers.' // default
+    UNKNOWN: 'An unknown error occurred; please try again or report this error to the developers.' // default
 };
+
 
 driveapi.FileManager.ApiUrl_ = {
     UPLOAD: 'https://www.googleapis.com/upload/drive/v2/files/',
