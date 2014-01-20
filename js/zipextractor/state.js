@@ -3,7 +3,6 @@
  */
 
 
-
 /**
  * States for the overall session state.
  */

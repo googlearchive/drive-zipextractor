@@ -93,7 +93,6 @@ zipextractor.View.prototype.attachDom_ = function() {
     this.primaryStatusSpinner = document.getElementById('primaryStatusSpinner');
     this.primaryStatusProgress = document.getElementById('primaryStatusProgress');
     this.primaryStatusText = document.getElementById('primaryStatusText');    
-    // this.primaryStatusProgressPercent = document.getElementById('primaryStatusProgressPercent');
     this.primaryStatusProgressBar = document.getElementById('primaryStatusProgressBar');
     
     this.selectAllCheckbox = document.getElementById('selectAllCheckbox');
