@@ -10,11 +10,11 @@
  *   driveapi.FileManager
  */
 
-zipextractor.Session = function(presenter, model, view, parentId, fileManager) {
+zipextractor.Session = function(parentId, presenter, model, view, fileManager) {
+    this.parentId_ = parentId;
     this.presenter_ = presenter;
     this.model_ = model;
     this.view_ = view;
-    this.parentId_ = parentId;
     this.workQueue_ = new zipextractor.util.AsyncWorkQueue(zipextractor.Session.MAX_WORKQUEUE_WORKERS_);
     this.fileManager_ = fileManager;
     
@@ -35,13 +35,28 @@ zipextractor.Session.TRANSFER_DECOMPRESS_MULTIPLIER_ = 3;
 zipextractor.Session.ENTRY_OVERHEAD_BYTES_ = 20000;
 
 
-zipextractor.Session.prototype.setParentId = function(parentId) {
-    this.parentId_ = parentId;
+/**
+ * Sets the current session parent ID to the ID of the first parent
+ * on the specified file.
+ */
+zipextractor.Session.prototype.updateParentIdByFile = function(file) {
+  var parents = file.parents;
+  if (parents && parents.length > 0) {
+      var parent = parents[0];
+      if (parent && parent.id) {
+          this.parentId_ = parent.id;
+      }
+  }
 };
 
 
 zipextractor.Session.prototype.getParentId = function() {
     return this.parentId_;
+};
+
+
+zipextractor.Session.prototype.setParentId = function(parentId) {
+    this.parentId_ = parentId;
 };
 
 

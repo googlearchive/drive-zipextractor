@@ -142,38 +142,48 @@ zipextractor.Presenter.prototype.processRequestFromState_ = function() {
     
    if (this.urlStateParser_.isForOpen()) {
         // Download the file, read the ZIP, update UI.
-        this.extractDriveFile_(this.urlStateParser_.getFileId());
+        this.extractDriveFileById_(this.urlStateParser_.getFileId());
     } else {
         // Create New scenario, launched in zero state; setup new session UI.
-        this.view_.updatePageTitle();
-        this.setState_(zipextractor.state.SessionState.NEW_SESSION);
+        this.startNewSession_();
     }
 };
 
 
-zipextractor.Presenter.prototype.extractDriveFile_ = function(id) {
+zipextractor.Presenter.prototype.startNewSession_ = function() {
+  this.view_.updatePageTitle();
+  this.setState_(zipextractor.state.SessionState.NEW_SESSION);  
+};
+
+
+zipextractor.Presenter.prototype.extractDriveFileById_ = function(id) {
     this.setState_(zipextractor.state.SessionState.DOWNLOADING_METADATA);
+    var callbacks = this.fileManager_.generateCallbacks(
+        zipextractor.util.bindFn(this.extractDriveFile_, this),
+        zipextractor.util.bindFn(this.onDownloadError_, this),
+        undefined /* progressCallback */,
+        zipextractor.util.bindFn(this.onDownloadAborted_, this));
+ 
+    this.fileManager_.get(id, callbacks);      
+};
+
+
+zipextractor.Presenter.prototype.extractDriveFile_ = function(file) {
+    this.setState_(zipextractor.state.SessionState.DOWNLOADING, file);
     var callbacks = this.fileManager_.generateCallbacks(
         zipextractor.util.bindFn(this.onDownloadSuccess_, this),
         zipextractor.util.bindFn(this.onDownloadError_, this),
         zipextractor.util.bindFn(this.onDownloadProgress_, this),
         zipextractor.util.bindFn(this.onDownloadAborted_, this));
-        
-    this.fileManager_.download(
-        id, 
-        zipextractor.util.bindFn(this.onDriveFileMetadataAvailable_, this),
-        callbacks);
+
+    this.fileManager_.downloadFile(file, callbacks);
 };
 
 
-zipextractor.Presenter.prototype.onDriveFileMetadataAvailable_ = function(file) {
-    this.setState_(zipextractor.state.SessionState.DOWNLOADING, file.title);
-};
-
-
-zipextractor.Presenter.prototype.onDownloadSuccess_ = function(filename, blob) {
+zipextractor.Presenter.prototype.onDownloadSuccess_ = function(file, blob) {
     this.setState_(zipextractor.state.SessionState.DOWNLOADED);
-    this.initModel_(filename, blob);
+    this.createSession_(file);
+    this.initModel_(file.title, blob);
 };
 
 
@@ -235,18 +245,21 @@ zipextractor.Presenter.prototype.modelBuildComplete_ = function() {
 
 
 zipextractor.Presenter.prototype.zipUiRenderComplete_ = function() {
-    this.createSession_();
     this.setState_(zipextractor.state.SessionState.PENDING_USER_INPUT);
 };
 
 
-zipextractor.Presenter.prototype.createSession_ = function() {
+zipextractor.Presenter.prototype.createSession_ = function(opt_file) {
     this.currentSession_ = new zipextractor.Session(
+        this.urlStateParser_.getFolderId(), /* parentId */
         this,
         this.model_, 
-        this.view_, 
-        this.urlStateParser_.getFolderId(),
+        this.view_,
         this.fileManager_);
+        
+    if (opt_file) {
+        this.currentSession_.updateParentIdByFile(opt_file);
+    }
 };
 
 
@@ -270,17 +283,21 @@ zipextractor.Presenter.prototype.VIEW__authRequested = function() {
 };
 
 
-zipextractor.Presenter.prototype.VIEW__driveFileChosen = function(id) {
-    this.extractDriveFile_(id);
+zipextractor.Presenter.prototype.VIEW__driveFileChosen = function(partialFile) {
+    // File as returned from Picker is not a complete Drive File resource.
+    // Must get full metadata to retrieve download URL.
+    this.extractDriveFileById_(partialFile.id);
 };
 
 
-zipextractor.Presenter.prototype.VIEW__driveFolderChosen = function(id) {
-    this.currentSession_.setParentId(id);
+zipextractor.Presenter.prototype.VIEW__driveFolderChosen = function(folder) {
+    this.currentSession_.setParentId(folder.id);
+    this.view_.updateDestinationFolderUi(folder);    
 };
 
 
 zipextractor.Presenter.prototype.VIEW__localBlobChosen = function(filename, blob) {
+    this.createSession_(undefined /* opt_file */);
     this.initModel_(filename, blob);
 };
 
@@ -293,18 +310,13 @@ zipextractor.Presenter.prototype.VIEW__extractNow = function() {
 zipextractor.Presenter.prototype.VIEW__cancelSession = function() {
     this.setState_(zipextractor.state.SessionState.SESSION_CANCELED);    
     this.reset_();
-    
-    // Perhaps put these two under 'this.startNewSession_()'.
-    this.view_.updatePageTitle();
-    this.setState_(zipextractor.state.SessionState.NEW_SESSION);
+    this.startNewSession_();
 };
 
 
 zipextractor.Presenter.prototype.VIEW__reset = function() {
-    // i.e., 'start over'
     this.reset_();
-    this.view_.updatePageTitle();
-    this.setState_(zipextractor.state.SessionState.NEW_SESSION);
+    this.startNewSession_();
 };
 
 
@@ -371,14 +383,7 @@ zipextractor.Presenter.prototype.VIEW__downloadBrowser = function(browser) {
 
 zipextractor.Presenter.prototype.VIEW__cancelDownload = function() {
     this.setState_(zipextractor.state.SessionState.CANCEL_DOWNLOAD_REQUESTED);
-    var wasImmediatelyCanceled = this.fileManager_.abortDownload();
-    
-    // TODO - not needed - if get() and download() can both be canceled.
-    /*
-    if (wasImmediatelyCanceled) {
-        this.handleDownloadCanceled_();
-    }
-    */
+    this.fileManager_.abortDownload();
 };
 
 
@@ -393,4 +398,3 @@ zipextractor.Presenter.prototype.getNewParentId_ = function() {
         return null;   
     }
 };
-

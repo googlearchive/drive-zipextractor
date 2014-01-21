@@ -163,11 +163,11 @@ driveapi.FileManager.prototype.handleDownloadResponse_ = function(metadataCallba
 
 
 driveapi.FileManager.prototype.downloadFile = function(file, callbacks) {
-    // Prepend file.title onto the success callback.
+    // Prepend file onto the success callback method params.
     var successCallback = callbacks[driveapi.FileManager.CallbackType_.SUCCESS];
     
     callbacks[driveapi.FileManager.CallbackType_.SUCCESS] = 
-        zipextractor.util.bindFn(successCallback, this, file.title);
+        zipextractor.util.bindFn(successCallback, this, file);
     
     this.sendXhr_(
         driveapi.FileManager.Method_.GET,

@@ -44,7 +44,7 @@ zipextractor.util.PickerManager.prototype.showInternal_ = function(pickerMode, c
 zipextractor.util.PickerManager.prototype.itemChosenInternalCallback_ = function(callback, data) {
   if (data.action == google.picker.Action.PICKED) {
     var file = data.docs[0];
-    callback(file.name, file.id);
+    callback(file);
   }
 };
 

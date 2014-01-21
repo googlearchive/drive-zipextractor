@@ -1,6 +1,6 @@
 /**
  * Main bootloader for ZIP Extractor.
- * Requires: zip
+ * Requires: zipextractor
  */
  
 var ZIP_EXTRACTOR_APP = null;

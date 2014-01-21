@@ -2,9 +2,9 @@
  * ZIP Extractor App.
  * Creates the presenter.
  * Exposes primary entry points from browser page/script load callbacks.
- * Depends on:
+ * Requires:
  *   driveapi.AppConfig
- *   zipextractor.state.SessionState
+ *   zipextractor.presenter
  */
  
 zipextractor.App = function() {

@@ -199,7 +199,8 @@ zipextractor.View.prototype.updateState = function(newState, oldState, opt_data)
             break;
             
         case zipextractor.state.SessionState.DOWNLOADING:
-            var statusText = 'Downloading "' + opt_data + '" from Google Drive...';
+            var file = opt_data;
+            var statusText = 'Downloading "' + file.title + '" from Google Drive...';
             this.updatePrimaryStatus_(true, true, statusText);
             this.handleDownloadProgress(0, 100);
             break;
@@ -499,12 +500,16 @@ zipextractor.View.prototype.updateUiForDownloadError_ = function(error) {
     this.showEl_(this.cancelDownloadButton, false);    
     this.showEl_(this.resetButton, true);
     
+    // TODO: Retry Download capability here. Perhaps with a dedicated button.
+    
     this.updatePrimaryStatus_(true, false, 'Unable to download file. (' + error + ')');
 };
 
 
-zipextractor.View.prototype.updateDestinationFolderUi_ = function(name, link) {
-    var statusHtml =  'Ready to extract ZIP file to "<a target="_blank" href="' + link + '">' + name + '</a>".';
+zipextractor.View.prototype.updateDestinationFolderUi = function(folder) {
+    var link = zipextractor.util.createDriveFolderLink(folder.id); 
+    var statusHtml =  'Ready to extract ZIP file to "<a target="_blank" href="' + link + '">' + folder.name + '</a>".';
+    
     this.updatePrimaryStatus_(true, false, statusHtml);
 };
 
@@ -528,14 +533,13 @@ zipextractor.View.prototype.changeDestinationFolderButtonClick_ = function(e) {
 };
 
 
-zipextractor.View.prototype.handlePickerFileSelected_ = function(name, id) {
-    this.presenter_.VIEW__driveFileChosen(id);
+zipextractor.View.prototype.handlePickerFileSelected_ = function(file) {
+    this.presenter_.VIEW__driveFileChosen(file);
 };
 
 
-zipextractor.View.prototype.handlePickerFolderSelected_ = function(name, id) {
-    this.presenter_.VIEW__driveFolderChosen(id);
-    this.updateDestinationFolderUi_(name, zipextractor.util.createDriveFolderLink(id)); 
+zipextractor.View.prototype.handlePickerFolderSelected_ = function(folder) {
+    this.presenter_.VIEW__driveFolderChosen(folder);
 };
 
 
