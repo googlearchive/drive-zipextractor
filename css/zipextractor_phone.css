@@ -53,7 +53,7 @@ a:hover {
 }
 
 .primaryStatusProgressContainer {
-    height: 20px;
+    height: 24px;
     padding-top: 10px;
 }
 
@@ -64,7 +64,7 @@ a:hover {
 
 .primaryStatusSpinner {
   padding-right: 4px;
-  display: inline-block;
+  display: block;
 }
 
 .primaryStatusText {
@@ -76,6 +76,7 @@ a:hover {
   padding-top: 8px;
   padding-bottom: 8px;
   min-height: 20px;
+  text-align: center;
 }
 
 .blue span {
@@ -83,8 +84,8 @@ a:hover {
 }
 
 .progress-bar {
-    height: 18px;
-    width: 350px;
+    height: 24px;
+    width: 100%;
     background-color: #eee;
 }
 
@@ -216,8 +217,11 @@ a:hover {
 /*===== Buttons =====*/
 
 .button {
+    display: block;
+    padding: 4px 0;
+    width: 100%;
     cursor:pointer;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
     margin-left: 0;
     box-sizing: content-box;
     min-width: 54px;*min-width:70px;/*hello,IE7!*/
@@ -228,7 +232,6 @@ a:hover {
     font-size: 11px;
     font-weight: bold;
     height: 27px;
-    padding: 0 8px;
     margin-right: 16px;
     line-height: 27px;
     -webkit-border-radius:2px;
