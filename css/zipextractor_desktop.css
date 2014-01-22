@@ -120,6 +120,43 @@ a:hover {
   width: 100%;
 }
 
+.tableHeaderCellName {
+  white-space: nowrap;
+}
+
+.tableHeaderCellSize {
+  white-space: nowrap; 
+  min-width: 80px; 
+  width:80px;
+}
+
+.tableHeaderCellStatus {
+  width: 100%;
+}
+
+.tableRowIcon {
+  padding-left: 2px;
+}
+
+.tableRowNameSpan {
+  padding-left: 5px;
+}
+
+.filenameCell {
+  padding-right: 24px;
+  white-space: nowrap;
+}
+
+.footerMain {
+  display:inline-block; color: #555;
+}
+
+.footerVersion {
+  float:right;
+  display:inline-block;
+  color:#555;
+  margin-right:16px;  
+}
 
 .progress-bar span {
 	display: inline-block;

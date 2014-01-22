@@ -59,7 +59,12 @@ zipextractor.Table.prototype.updateChildEntryIndents_ = function(entry, amount) 
 zipextractor.Table.prototype.shiftEntryPadding_ = function(entry, amount) {
     var cell = entry.tableRow.cells[0];
     var currentPaddingValue = parseInt(cell.style.paddingLeft, 10);
-    cell.style.paddingLeft = (currentPaddingValue + amount) + 'px';
+    this.setCellPaddingLeft_(cell, currentPaddingValue + amount);
+};
+
+
+zipextractor.Table.prototype.setCellPaddingLeft_ = function(cell, padding) {
+    cell.style.paddingLeft = padding + 'px';
 };
 
 
@@ -116,20 +121,14 @@ zipextractor.Table.prototype.generateChildren_ = function(entry, depth) {
 
 
 zipextractor.Table.prototype.generateFileTableRow_ = function(entry, depth) {
-  var row = this.tableEl_.insertRow(-1);
-  var filenameCell = row.insertCell(0);
-  var sizeCell = row.insertCell(1);
-  var statusCell = row.insertCell(2);
+    var row = this.tableEl_.insertRow(-1);
+    var filenameCell = row.insertCell(0);
+    var sizeCell = row.insertCell(1);
+    var statusCell = row.insertCell(2);
   
+    filenameCell.className = 'filenameCell';
     filenameCell.style.paddingLeft = zipextractor.Table.BASE_INDENT_PX_ + 
         (zipextractor.Table.INDENT_PX_ * depth) + 'px';
-
-    filenameCell.style.paddingRight = '24px';
-    filenameCell.style.whiteSpace = 'nowrap';
-    
-    if (entry.root) {
-        // filenameCell.style.fontWeight = 'bold';
-    }
 
     // Create the checkbox.
     var checkbox = document.createElement('input');
@@ -143,8 +142,8 @@ zipextractor.Table.prototype.generateFileTableRow_ = function(entry, depth) {
     };
     
     var nameSpan = document.createElement('span');
-      nameSpan.innerHTML = entry.name;
-      nameSpan.style.paddingLeft = '5px';
+    nameSpan.className = 'tableRowNameSpan';
+    nameSpan.innerHTML = entry.name;
       
     var imgSrc = zipextractor.Table.IMAGES_PATH_ + (entry.directory ? 
         (entry.root ? zipextractor.Table.Icon_.CONTAINER : zipextractor.Table.Icon_.FOLDER) : zipextractor.Table.Icon_.FILE);
@@ -152,11 +151,11 @@ zipextractor.Table.prototype.generateFileTableRow_ = function(entry, depth) {
         (entry.root ? 'Container icon' : 'Folder icon') : 'File icon';
   
     var img = document.createElement("img");
+    img.className = 'tableRowIcon';
     img.setAttribute('src', imgSrc);
     img.setAttribute('alt', imgAlt);
     img.style.width = '16px';
     img.style.height = '16px';
-    img.style.paddingLeft = '2px';
 
     filenameCell.appendChild(img);
     filenameCell.appendChild(nameSpan);
