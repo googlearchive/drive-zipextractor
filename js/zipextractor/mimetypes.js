@@ -1,3 +1,4 @@
+
 function getMimeTypes() {
     return {
                 // Extensions:
