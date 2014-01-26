@@ -98,12 +98,27 @@ a:hover {
 
 .footer {
     margin-top: 12px; 
-    height: 20px; 
     font-size: 12px; 
     font-weight: normal; 
     background-color: #ECF5FB; 
-    padding-top: 5px; 
+    padding-top: 6px;
+    padding-bottom: 6px;
+    line-height: 130%;
     text-align: center;
+}
+
+.footerMain {
+  display:block;
+  color: #555;
+}
+
+.footerCopyright {
+}
+
+.footerSupport {
+}
+
+.footerVersion {
 }
 
 .fileTableDiv {
@@ -145,17 +160,6 @@ a:hover {
 .filenameCell {
   padding-right: 24px;
   white-space: nowrap;
-}
-
-.footerMain {
-  display:inline-block; color: #555;
-}
-
-.footerVersion {
-  float:right;
-  display:inline-block;
-  color:#555;
-  margin-right:16px;  
 }
 
 .progress-bar span {
