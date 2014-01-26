@@ -140,8 +140,11 @@ zipextractor.Table.prototype.generateFileTableRow_ = function(entry, depth) {
     var filenameCell = row.insertCell(0);
     var sizeCell = row.insertCell(1);
     var statusCell = row.insertCell(2);
+
+    filenameCell.className = 'filenameCell';    
+    sizeCell.className = 'sizeCell';
+    statusCell.className = 'statusCell';
   
-    filenameCell.className = 'filenameCell';
     filenameCell.style.paddingLeft = zipextractor.Table.BASE_INDENT_PX_ + 
         (zipextractor.Table.INDENT_PX_ * depth) + 'px';
 

@@ -156,7 +156,15 @@ a:hover {
 }
 
 .filenameCell {
-  padding-right: 8px;
+  padding-right: 4px;
+}
+
+.sizeCell {
+  display: none;
+}
+
+.statusCell {
+  display: none;
 }
 
 .progress-bar span {
