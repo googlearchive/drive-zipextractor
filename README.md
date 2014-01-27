@@ -11,9 +11,22 @@ ZIP Extractor makes use of CORS (Cross-Origin Resource Sharing) methods for uplo
 
 This app uses the zip.js Javascript-based ZIP library, available on GitHub (http://gildas-lormeau.github.io/zip.js/).
 
-To run this code yourself, it will need to be hosted somewhere. Options for hosting include Google App Engine, where a simple Python configuration provides an easy-to-use way to expose only static content (in this case, serving the JavaScript). Other alternatives include using a Google Drive public folder to host the files, or your own web server. In all cases, a configuration will need to be created in the Google APIs Console. The resulting App ID and Client ID generated as part of that process will need to be put into the your app's code. For ZIP Extractor, that configuration information in found in 'config.js.'
+To run this code yourself, it will need to be hosted somewhere. Options for hosting include Google App Engine, where a simple Python configuration provides an easy-to-use way to expose only static content (in this case, serving the JavaScript). Other alternatives include using a Google Drive public folder to host the files, or your own web server.
 
-For any questions, please email zipextractor@gmail.com or post to the Google Drive Developers G+ community (https://plus.sandbox.google.com/communities/107264319205603895037).
+In all cases, a configuration will need to be created in the Google Developers Console, as outlined here:
+https://developers.google.com/drive/web/enable-sdk
+
+Note: The resulting App ID and Client ID generated as part of that process will need to be put into the your app's code. For ZIP Extractor, that configuration information in found in 'config.js'.
+
+==========================================================================
+
+For any questions about ZIP Extractor, please email zipextractor@gmail.com.
+
+For technical questions about the Google Drive API, you can post to the Google Drive Developers G+ community:
+https://plus.sandbox.google.com/communities/107264319205603895037.
+
+You can also post a question on the Stack Overflow forums:
+http://stackoverflow.com/questions/tagged/google-drive-sdk
 
 
 Mike Procopio, January 2014
