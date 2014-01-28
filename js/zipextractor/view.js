@@ -311,9 +311,11 @@ zipextractor.View.prototype.updateEntryState = function(entry, newState, oldStat
             break;
             
         case zipextractor.state.EntryState.CANCELED:
+            this.updateEntryIconForState_(entry, true);
             break;            
 
         case zipextractor.state.EntryState.BEGIN_UPLOAD:
+            this.updateEntryIconForState_(entry, false);
             break;
 
         case zipextractor.state.EntryState.UPLOAD_PROGRESS:
@@ -324,15 +326,19 @@ zipextractor.View.prototype.updateEntryState = function(entry, newState, oldStat
             break;
 
         case zipextractor.state.EntryState.UPLOAD_COMPLETE:
+            // Special call will come in for the icon.
             break;
             
         case zipextractor.state.EntryState.UPLOAD_ERROR:
+            this.updateEntryIconForState_(entry, true);
             break;
             
         case zipextractor.state.EntryState.UPLOAD_ABORTED:
+            this.updateEntryIconForState_(entry, true);
             break;
                         
         case zipextractor.state.EntryState.BEGIN_DECOMPRESSION:
+            this.updateEntryIconForState_(entry, false);
             break;
 
         case zipextractor.state.EntryState.DECOMPRESSION_PROGRESS:
@@ -349,6 +355,12 @@ zipextractor.View.prototype.updateEntryState = function(entry, newState, oldStat
     }
     
     this.table_.updateEntryState(entry, newState, progress);
+};
+
+
+zipextractor.View.prototype.updateEntryIconForState_ = function(entry, complete) {
+    // TODO: Additional icons for error, abort, etc.
+    this.table_.updateEntryIcon(entry, undefined /* iconUrl */, !complete /* showSpinner */);      
 };
 
 
@@ -378,8 +390,12 @@ zipextractor.View.prototype.updateUiForFileComplete = function(entry, openUrl, i
         this.table_.updateEntryLink(entry, openUrl);
     }
     
+    // Clear the spinner icon and show either the icon for the uploaded file,
+    // or a default icon.
     if (iconUrl) {
         this.table_.updateEntryIcon(entry, iconUrl);
+    } else {
+        this.updateEntryIconForState_(entry, true);
     }
 };
 

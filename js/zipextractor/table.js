@@ -36,7 +36,8 @@ zipextractor.Table.IMAGES_PATH_ = 'images/';
 zipextractor.Table.Icon_ = {
     CONTAINER: 'folder.png',
     FOLDER: 'folder.png',
-    FILE: 'file.png'
+    FILE: 'file.png',
+    SPINNER: 'spinner.gif'
 };
 
 
@@ -163,15 +164,13 @@ zipextractor.Table.prototype.generateFileTableRow_ = function(entry, depth) {
     nameSpan.className = 'tableRowNameSpan';
     nameSpan.innerHTML = entry.name;
       
-    var imgSrc = zipextractor.Table.IMAGES_PATH_ + (entry.directory ? 
-        (entry.root ? zipextractor.Table.Icon_.CONTAINER : zipextractor.Table.Icon_.FOLDER) : zipextractor.Table.Icon_.FILE);
-    var imgAlt = entry.directory ? 
-        (entry.root ? 'Container icon' : 'Folder icon') : 'File icon';
+    var imgSrc = this.getDefaultIconForEntry_(entry);
+    var altText = this.getDefaultAltTextForEntry_(entry);
   
     var img = document.createElement("img");
     img.className = 'tableRowIcon';
     img.setAttribute('src', imgSrc);
-    img.setAttribute('alt', imgAlt);
+    img.setAttribute('alt', altText);
     img.style.width = '16px';
     img.style.height = '16px';
 
@@ -184,6 +183,20 @@ zipextractor.Table.prototype.generateFileTableRow_ = function(entry, depth) {
     sizeCell.innerHTML = '——';
   }
   return row;
+};
+
+
+zipextractor.Table.prototype.getDefaultIconForEntry_ = function(entry) {
+    return zipextractor.Table.IMAGES_PATH_ + (entry.directory ? 
+        (entry.root ? zipextractor.Table.Icon_.CONTAINER : zipextractor.Table.Icon_.FOLDER) : 
+        zipextractor.Table.Icon_.FILE);
+};
+
+
+zipextractor.Table.prototype.getDefaultAltTextForEntry_ = function(entry) {
+    return entry.directory ? 
+        (entry.root ? 'Container icon' : 'Folder icon') : 
+        'File icon';
 };
 
 
@@ -281,8 +294,22 @@ zipextractor.Table.prototype.updateEntryState = function(entry, state, progress)
 };
 
 
-zipextractor.Table.prototype.updateEntryIcon = function(entry, iconUrl) {
-    entry.tableRow.cells[0].children[1].src = iconUrl;
+zipextractor.Table.prototype.updateEntryIcon = function(entry, opt_iconUrl, showSpinner) {
+    var iconSource = opt_iconUrl ?
+      iconUrl :
+      (showSpinner ? 
+          (zipextractor.Table.IMAGES_PATH_ + zipextractor.Table.Icon_.SPINNER) :
+          this.getDefaultIconForEntry_(entry));
+
+     var iconAltText = opt_iconUrl ?
+        this.getDefaultAltTextForEntry_(entry) :
+            (showSpinner ? 
+                'Processing...' :
+                this.getDefaultAltTextForEntry_(entry));
+     
+     var imgTag =  entry.tableRow.cells[0].children[1];
+     imgTag.src = iconSource;
+     imgTag.alt = iconAltText;
 };
 
 
