@@ -296,7 +296,7 @@ zipextractor.Table.prototype.updateEntryState = function(entry, state, progress)
 
 zipextractor.Table.prototype.updateEntryIcon = function(entry, opt_iconUrl, showSpinner) {
     var iconSource = opt_iconUrl ?
-      iconUrl :
+      opt_iconUrl :
       (showSpinner ? 
           (zipextractor.Table.IMAGES_PATH_ + zipextractor.Table.Icon_.SPINNER) :
           this.getDefaultIconForEntry_(entry));
