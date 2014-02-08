@@ -97,7 +97,7 @@ a:hover {
 }
 
 .footer {
-    margin-top: 12px; 
+    margin-top: 20px; 
     font-size: 12px; 
     font-weight: normal; 
     background-color: #ECF5FB; 
@@ -110,6 +110,7 @@ a:hover {
 .footerMain {
   display:block;
   color: #555;
+  line-height: 150%;
 }
 
 .footerCopyright {
@@ -160,6 +161,36 @@ a:hover {
 .filenameCell {
   padding-right: 24px;
   white-space: nowrap;
+}
+
+.zipDropArea {
+    background: url(../images/zip-extractor-icon-64.png) no-repeat center 30px;
+    background-color: #f3f3f3;
+    border: 3px dashed #ccc;
+    color: #222;
+    font-size: 20px;
+    font-weight: normal;
+    padding: 10px;
+    text-align: center;
+    padding-top: 110px;
+    padding-bottom: 40px;
+    opacity: 0.5;
+    margin-top: 20px;
+}
+
+.zipDropAreaHover {
+  background-color: #ffffe0;
+  -webkit-transition: background-color .3s ease-out;
+  -moz-transition: background-color .3s ease-out;
+  -ms-transition: background-color .3s ease-out;
+  -o-transition: background-color .3s ease-out;
+  transition: background-color .3s ease-out;
+  opacity: 1;
+  -webkit-transition: opacity .3s ease-out;
+  -moz-transition: opacity .3s ease-out;
+  -ms-transition: opacity .3s ease-out;
+  -o-transition: opacity .3s ease-out;
+  transition: opacity .3s ease-out;
 }
 
 .progress-bar span {

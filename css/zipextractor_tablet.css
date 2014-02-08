@@ -162,6 +162,14 @@ a:hover {
   white-space: nowrap;
 }
 
+.zipDropArea {
+  display: none;
+}
+
+.zipDropAreaHover {
+  display: none;
+}
+
 .progress-bar span {
 	display: inline-block;
 	height: 100%;	

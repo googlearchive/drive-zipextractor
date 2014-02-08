@@ -31,6 +31,7 @@ zipextractor.View = function(presenter, pickerManager) {
     this.isInitialized_ = false;
         
     this.localFileInputEl = null;
+    this.zipDropAreaDiv = null;
     
     this.chooseFileFromDriveButton = null;
     this.chooseLocalFileButton = null;
@@ -87,6 +88,7 @@ zipextractor.View.prototype.attachDom_ = function() {
     this.authButton = document.getElementById('authorizeButton');
 
     this.localFileInputEl = document.getElementById('filePicker');
+    this.zipDropAreaDiv = document.getElementById('zipDropArea');
     
     this.chooseFileFromDriveButton = document.getElementById('chooseFromDriveButton');
     this.chooseLocalFileButton = document.getElementById('chooseLocalFileButton');
@@ -142,6 +144,11 @@ zipextractor.View.prototype.attachListeners_ = function() {
     this.downloadFirefoxButton.onclick = zipextractor.util.bindFn(this.handleDownloadFirefoxButtonClick_, this);
     this.downloadIeButton.onclick = zipextractor.util.bindFn(this.handleDownloadIeButtonClick_, this);
     this.selectAllCheckbox.onclick = zipextractor.util.bindFn(this.handleSelectAllCheckboxClick_, this);
+    
+    this.zipDropAreaDiv.ondragenter = zipextractor.util.bindFn(this.handleZipDropAreaDragEnter_, this);
+    this.zipDropAreaDiv.ondragleave = zipextractor.util.bindFn(this.handleZipDropAreaDragLeave_, this);
+    this.zipDropAreaDiv.ondragover = zipextractor.util.bindFn(this.handleZipDropAreaDragOver_, this);
+    this.zipDropAreaDiv.ondrop = zipextractor.util.bindFn(this.handleZipDropAreaDrop_, this);
 };
 
 
@@ -209,7 +216,8 @@ zipextractor.View.prototype.updateState = function(newState, oldState, opt_data)
                         
         case zipextractor.state.SessionState.DOWNLOADING_METADATA:
             this.showEl_(this.chooseFileFromDriveButton, false);
-            this.showEl_(this.chooseLocalFileButton, false);    
+            this.showEl_(this.chooseLocalFileButton, false);
+            this.showEl_(this.zipDropAreaDiv, false);
             this.showEl_(this.cancelDownloadButton, true);    
             this.enableEl_(this.cancelDownloadButton, true);    
             
@@ -242,7 +250,8 @@ zipextractor.View.prototype.updateState = function(newState, oldState, opt_data)
         case zipextractor.state.SessionState.ZIP_READ_ERROR:
             this.updatePrimaryStatus_(true, false, 'Error reading ZIP file: ' + opt_data);
             this.enableEl_(this.chooseFileFromDriveButton, true);
-            this.enableEl_(this.chooseLocalFileButton, true);    
+            this.enableEl_(this.chooseLocalFileButton, true);
+            this.showEl_(this.zipDropAreaDiv, true); 
             break;
             
         case zipextractor.state.SessionState.MODEL_BUILDING:
@@ -275,7 +284,8 @@ zipextractor.View.prototype.updateState = function(newState, oldState, opt_data)
         case zipextractor.state.SessionState.ZIP_READING:
             this.updatePrimaryStatus_(true, true, 'Reading ZIP file...');
             this.enableEl_(this.chooseFileFromDriveButton, false);
-            this.enableEl_(this.chooseLocalFileButton, false);                
+            this.enableEl_(this.chooseLocalFileButton, false);
+            this.showEl_(this.zipDropAreaDiv, false);                  
             break;           
             
         case zipextractor.state.SessionState.EXTRACTING:
@@ -495,7 +505,8 @@ zipextractor.View.prototype.setupForNewSession_ = function() {
     this.showEl_(this.chooseFileFromDriveButton, true);
     this.showEl_(this.chooseLocalFileButton, true);
     this.enableEl_(this.chooseFileFromDriveButton, true);
-    this.enableEl_(this.chooseLocalFileButton, true);    
+    this.enableEl_(this.chooseLocalFileButton, true);
+    this.showEl_(this.zipDropAreaDiv, true);
     
     this.table_.clear();
     this.enableEl_(this.selectAllCheckbox, true);
@@ -512,6 +523,7 @@ zipextractor.View.prototype.promptToExtract_ = function() {
     this.showEl_(this.changeDestinationFolderButton, true);
     this.showEl_(this.chooseFileFromDriveButton, false);
     this.showEl_(this.chooseLocalFileButton, false);
+    this.showEl_(this.zipDropAreaDiv, false);
     this.showEl_(this.cancelDownloadButton, false);
 };
 
@@ -585,6 +597,45 @@ zipextractor.View.prototype.handleLocalFileInputElChange_ = function(e) {
     if (file) {
         this.presenter_.VIEW__localBlobChosen(file.name, file);
     }
+};
+
+
+zipextractor.View.prototype.handleZipDropAreaDragEnter_ = function(e) {
+  e.stopPropagation();
+  e.preventDefault();
+  e.dataTransfer.allowedEffect = 'copyMove';
+  this.zipDropAreaDiv.classList.add('zipDropAreaHover');    
+};
+
+
+zipextractor.View.prototype.handleZipDropAreaDragLeave_ = function(e) {
+  e.stopPropagation();
+  e.preventDefault();
+  this.zipDropAreaDiv.classList.remove('zipDropAreaHover');    
+};
+
+
+zipextractor.View.prototype.handleZipDropAreaDragOver_ = function(e) {
+  e.stopPropagation();
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+};
+
+
+zipextractor.View.prototype.handleZipDropAreaDrop_ = function(e) {
+  e.stopPropagation();
+  e.preventDefault();
+  this.zipDropAreaDiv.classList.remove('zipDropAreaHover');
+
+  var files = e.dataTransfer.files;
+  if (files && files.length == 1) {
+    var file = files[0];
+    var filename = file.name;
+    var requiredExtension = '.zip';
+    if (filename.indexOf(requiredExtension, filename.length - requiredExtension.length) !== -1) {
+      this.presenter_.VIEW__localBlobChosen(file.name, file);
+    }
+  }
 };
 
 
