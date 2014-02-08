@@ -335,6 +335,12 @@ zipextractor.Presenter.prototype.VIEW__reset = function() {
 };
 
 
+zipextractor.Presenter.prototype.VIEW__rateApp = function() {
+  var url = 'https://chrome.google.com/webstore/detail/zip-extractor/mmfcakoljjhncfphlflcedhgogfhpbcd?hl=en-US';
+  window.open(url, '_blank').focus();
+};
+
+
 zipextractor.Presenter.prototype.VIEW__cancelExtraction = function() {
     this.setState_(zipextractor.state.SessionState.EXTRACTION_CANCEL_REQUESTED);
     this.currentSession_.abort();

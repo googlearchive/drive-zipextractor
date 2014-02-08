@@ -35,6 +35,7 @@ zipextractor.View = function(presenter, pickerManager) {
     this.chooseFileFromDriveButton = null;
     this.chooseLocalFileButton = null;
     this.resetButton = null;
+    this.rateAppButton = null;
     this.viewFilesButton = null;
     this.retryErrorsButton = null;
     this.shareFilesButton = null;
@@ -89,7 +90,8 @@ zipextractor.View.prototype.attachDom_ = function() {
     
     this.chooseFileFromDriveButton = document.getElementById('chooseFromDriveButton');
     this.chooseLocalFileButton = document.getElementById('chooseLocalFileButton');
-    this.resetButton = document.getElementById('resetButton');  
+    this.resetButton = document.getElementById('resetButton');
+    this.rateAppButton = document.getElementById('rateAppButton');
     this.viewFilesButton = document.getElementById('viewFilesButton');
     this.retryErrorsButton = document.getElementById('retryErrorsButton');
     this.shareFilesButton = document.getElementById('shareFilesButton');
@@ -127,6 +129,7 @@ zipextractor.View.prototype.attachListeners_ = function() {
     this.chooseFileFromDriveButton.onclick = zipextractor.util.bindFn(this.chooseFileFromDriveButtonClick_, this);
     this.changeDestinationFolderButton.onclick = zipextractor.util.bindFn(this.changeDestinationFolderButtonClick_, this); 
     this.resetButton.onclick = zipextractor.util.bindFn(this.handleResetButtonClick_, this);  
+    this.rateAppButton.onclick = zipextractor.util.bindFn(this.handleRateAppButtonClick_, this);  
     this.authButton.onclick = zipextractor.util.bindFn(this.handleAuthButtonClick_, this);
     this.cancelSessionButton.onclick = zipextractor.util.bindFn(this.handleCancelSessionButtonClick_, this);
     this.extractNowButton.onclick = zipextractor.util.bindFn(this.handleExtractNowButtonClick_, this);
@@ -444,6 +447,7 @@ zipextractor.View.prototype.updateUiForExtractionComplete_ = function(hasErrors)
     this.showEl_(this.viewFilesButton, true);
     this.showEl_(this.retryErrorsButton, hasErrors);
     this.showEl_(this.resetButton, true);
+    this.showEl_(this.rateAppButton, true);
     
     if (!hasErrors) {
         // Can only share files if a parent folder was created.
@@ -467,6 +471,7 @@ zipextractor.View.prototype.updateUiForExtractionStart_ = function(entryTree) {
     this.showEl_(this.retryErrorsButton, false);
     this.showEl_(this.viewFilesButton, false);
     this.showEl_(this.resetButton, false);
+    this.showEl_(this.rateAppButton, false);
     
     this.enableEl_(this.selectAllCheckbox, false);
     this.table_.lockForSession(entryTree);
@@ -483,6 +488,7 @@ zipextractor.View.prototype.setupForNewSession_ = function() {
     this.showEl_(this.retryErrorsButton, false);
     this.showEl_(this.shareFilesButton, false);
     this.showEl_(this.resetButton, false);
+    this.showEl_(this.rateAppButton, false);
     this.showEl_(this.cancelDownloadButton, false);
     this.showEl_(this.fileTableDiv, false);
     
@@ -599,6 +605,11 @@ zipextractor.View.prototype.handleCancelSessionButtonClick_ = function() {
 
 zipextractor.View.prototype.handleResetButtonClick_ = function() {
     this.presenter_.VIEW__reset();
+};
+
+
+zipextractor.View.prototype.handleRateAppButtonClick_ = function() {
+    this.presenter_.VIEW__rateApp();
 };
 
 
