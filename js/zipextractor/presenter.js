@@ -336,7 +336,7 @@ zipextractor.Presenter.prototype.VIEW__reset = function() {
 
 
 zipextractor.Presenter.prototype.VIEW__rateApp = function() {
-  var url = 'https://chrome.google.com/webstore/detail/zip-extractor/mmfcakoljjhncfphlflcedhgogfhpbcd?hl=en-US';
+  var url = 'https://chrome.google.com/webstore/detail/zip-extractor/mmfcakoljjhncfphlflcedhgogfhpbcd/reviews?hl=en-US';
   window.open(url, '_blank').focus();
 };
 
