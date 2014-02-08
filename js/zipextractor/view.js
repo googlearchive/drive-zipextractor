@@ -457,7 +457,7 @@ zipextractor.View.prototype.updateUiForExtractionComplete_ = function(hasErrors)
     this.showEl_(this.viewFilesButton, true);
     this.showEl_(this.retryErrorsButton, hasErrors);
     this.showEl_(this.resetButton, true);
-    this.showEl_(this.rateAppButton, hasErrors);
+    this.showEl_(this.rateAppButton, !hasErrors);
     
     if (!hasErrors) {
         // Can only share files if a parent folder was created.
