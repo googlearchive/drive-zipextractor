@@ -41,6 +41,7 @@ zipextractor.Session = function(parentId, presenter, model, view, fileManager) {
     
     this.isClosed_ = false;
     this.isAborted_ = false;
+    this.hasBeenRetried_ = false;
 };
 
 // TODO: Consider compatibility mode.
@@ -98,7 +99,7 @@ zipextractor.Session.prototype.close = function() {
     this.totalSessionSize_ = 0;
     this.currentSessionProgress_ = 0;
     
-    this.isClosed_ = true;    
+    this.isClosed_ = true;
 };
 
 
@@ -109,6 +110,11 @@ zipextractor.Session.prototype.hasErrors = function() {
     } else {
         return this.childEntriesHaveErrors_(rootEntry);
     }
+};
+
+
+zipextractor.Session.prototype.hasBeenRetried = function() {
+  return this.hasBeenRetried_;
 };
 
 
@@ -128,6 +134,10 @@ zipextractor.Session.prototype.childEntriesHaveErrors_ = function(entry) {
 zipextractor.Session.prototype.execute = function(isForRetry) {
     if (this.isClosed_) {
         throw('Error: Cannot execute a closed session.');
+    }
+    
+    if (isForRetry) {
+      this.hasBeenRetried_ = true;
     }
     
     var rootEntry = this.model_.getEntryTree();
