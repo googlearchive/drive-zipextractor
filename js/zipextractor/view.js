@@ -218,7 +218,8 @@ zipextractor.View.prototype.updateState = function(newState, oldState, opt_data)
         case zipextractor.state.SessionState.DOWNLOADING_METADATA:
             this.showEl_(this.chooseFileFromDriveButton, false);
             this.showEl_(this.chooseLocalFileButton, false);
-            this.showEl_(this.zipDropAreaDiv, false);
+            // this.showEl_(this.zipDropAreaDiv, false);
+            this.zipDropAreaDiv.style.visibility = 'hidden';
             this.showEl_(this.cancelDownloadButton, true);    
             this.enableEl_(this.cancelDownloadButton, true);    
             
@@ -287,7 +288,9 @@ zipextractor.View.prototype.updateState = function(newState, oldState, opt_data)
             this.updatePrimaryStatus_(true, true, 'Reading ZIP file...');
             this.enableEl_(this.chooseFileFromDriveButton, false);
             this.enableEl_(this.chooseLocalFileButton, false);
-            this.showEl_(this.zipDropAreaDiv, false);                  
+            
+            // Hide the element, but don't change position to prevent page flicker.
+            this.zipDropAreaDiv.style.visibility = 'hidden';            
             break;           
             
         case zipextractor.state.SessionState.EXTRACTING:
@@ -508,7 +511,9 @@ zipextractor.View.prototype.setupForNewSession_ = function() {
     this.showEl_(this.chooseLocalFileButton, true);
     this.enableEl_(this.chooseFileFromDriveButton, true);
     this.enableEl_(this.chooseLocalFileButton, true);
+    
     this.showEl_(this.zipDropAreaDiv, true);
+    this.zipDropAreaDiv.style.visibility = '';
     
     this.table_.clear();
     this.enableEl_(this.selectAllCheckbox, true);
