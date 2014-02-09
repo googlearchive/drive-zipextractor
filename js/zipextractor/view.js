@@ -209,7 +209,8 @@ zipextractor.View.prototype.updateState = function(newState, oldState, opt_data)
             break;
             
         case zipextractor.state.SessionState.DOWNLOAD_CANCELED:
-            this.showEl_(this.cancelDownloadButton, false) 
+            this.showEl_(this.cancelDownloadButton, false);
+            this.enableEl_(this.cancelDownloadButton, true);    
             this.showEl_(this.resetButton, true);
             this.updatePrimaryStatus_(true, false, 'Download canceled.');
             break;
@@ -236,6 +237,7 @@ zipextractor.View.prototype.updateState = function(newState, oldState, opt_data)
             break;                        
             
         case zipextractor.state.SessionState.DOWNLOADED:
+            this.showEl_(this.cancelDownloadButton, false);
             this.updatePrimaryStatus_(true, false, 'File downloaded.');
             break;
 
@@ -251,7 +253,7 @@ zipextractor.View.prototype.updateState = function(newState, oldState, opt_data)
             this.updatePrimaryStatus_(true, false, 'Error reading ZIP file: ' + opt_data);
             this.enableEl_(this.chooseFileFromDriveButton, true);
             this.enableEl_(this.chooseLocalFileButton, true);
-            this.showEl_(this.zipDropAreaDiv, true); 
+            this.showEl_(this.resetButton, true);
             break;
             
         case zipextractor.state.SessionState.MODEL_BUILDING:
