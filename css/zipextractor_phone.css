@@ -176,7 +176,7 @@ a:hover {
 }
 
 .rateAppButton {
-  display: none;
+  display: none !important;
 }
 
 .progress-bar span {
