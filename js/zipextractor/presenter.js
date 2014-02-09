@@ -43,7 +43,10 @@ zipextractor.Presenter = function(appConfig) {
     this.htmlBodyLoaded_ = false;
     this.apiLoaded_ = false;
     this.sharingLoaded_ = false;
-    this.currentSession_ = null; 
+    this.currentSession_ = null;
+    
+    this.hasDownloadBeenRetried_ = false;
+    this.lastDownloadId_ = null;
 };
 
 
@@ -172,6 +175,9 @@ zipextractor.Presenter.prototype.startNewSession_ = function() {
 
 
 zipextractor.Presenter.prototype.extractDriveFileById_ = function(id) {
+    // Store the most recent download ID to support retry.
+    this.lastDownloadId_ = id;
+    
     this.setState_(zipextractor.state.SessionState.DOWNLOADING_METADATA);
     var callbacks = this.fileManager_.generateCallbacks(
         zipextractor.util.bindFn(this.extractDriveFile_, this),
@@ -203,7 +209,13 @@ zipextractor.Presenter.prototype.onDownloadSuccess_ = function(file, blob) {
 
 
 zipextractor.Presenter.prototype.onDownloadError_ = function(error, message) {
-    this.setState_(zipextractor.state.SessionState.DOWNLOAD_ERROR, message);
+  // Auto-retry download once.
+  if (!this.hasDownloadBeenRetried_) {
+    this.hasDownloadBeenRetried_ = true;
+    this.extractDriveFileById_(this.lastDownloadId_);
+  } else {
+    this.setState_(zipextractor.state.SessionState.DOWNLOAD_ERROR, message);    
+  }
 };
 
 
