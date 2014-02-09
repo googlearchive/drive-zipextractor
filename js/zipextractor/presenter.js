@@ -348,7 +348,14 @@ zipextractor.Presenter.prototype.VIEW__cancelExtraction = function() {
 
 
 zipextractor.Presenter.prototype.SESSION__extractionComplete = function() {
-    this.setState_(zipextractor.state.SessionState.EXTRACTION_COMPLETE, this.currentSession_.hasErrors());
+  var hasErrors = this.currentSession_.hasErrors();
+  
+  // Auto-retry once.
+  if (hasErrors & !this.currentSession_.hasBeenRetried()) {
+    this.extract_(true /* isForRetry */);
+  } else {
+    this.setState_(zipextractor.state.SessionState.EXTRACTION_COMPLETE, hasErrors);    
+  }
 };
 
 
