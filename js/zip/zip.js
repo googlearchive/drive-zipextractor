@@ -28,8 +28,8 @@
 
 (function(obj) {
 
-	var ERR_BAD_FORMAT = "File format is not recognized.";
-	var ERR_ENCRYPTED = "File contains encrypted entry.";
+	var ERR_BAD_FORMAT = "Not a ZIP file, or unsupported ZIP format.";
+	var ERR_ENCRYPTED = "Password-encrypted ZIP files are not supported.";
 	var ERR_ZIP64 = "File is using Zip64 (4gb+ file size).";
 	var ERR_READ = "Error while reading zip file.";
 	var ERR_WRITE = "Error while writing zip file.";
