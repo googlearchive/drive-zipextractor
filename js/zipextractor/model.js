@@ -50,7 +50,7 @@ zipextractor.Model.prototype.getEntryTree = function() {
 
 
 zipextractor.Model.prototype.clear = function() {
-    if (!this.entryTree_) {
+    if (! (this.entryTree_ || this.filename_)) {
         throw('No exisitng model to clear.');
     }
     
