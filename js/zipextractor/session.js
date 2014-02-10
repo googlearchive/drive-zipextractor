@@ -372,7 +372,7 @@ zipextractor.Session.prototype.processFolder_ = function(entry, parentId, worker
         return;
     }
     
-    // Reset any previous progrss values.
+    // Reset any previous progress values.
     entry.uploadPrev = 0;
     entry.uploadCurrent = 0;
     entry.uploadTotal = 0;    
@@ -386,8 +386,10 @@ zipextractor.Session.prototype.processFolder_ = function(entry, parentId, worker
             entry,
             workerCompleteCallback,
             zipextractor.util.bindFn(this.processEntryTreeChildren_, this, entry)),
-        zipextractor.util.bindFn(this.folderInsertError_, this, entry, workerCompleteCallback));
-    
+        zipextractor.util.bindFn(this.folderInsertError_, this, entry, workerCompleteCallback),
+        undefined /* progressCallback */,
+        zipextractor.util.bindFn(this.folderInsertAborted_, this, entry, workerCompleteCallback));
+
     this.fileManager_.insertFolder(entry.name, parentId, callbacks);
 };
 
@@ -459,7 +461,8 @@ zipextractor.Session.prototype.uploadFile_ = function(entry, parentId, blob, wor
     var callbacks = this.fileManager_.generateCallbacks(
         zipextractor.util.bindFn(this.fileUploadComplete_, this, entry, workerCompleteCallback),
         zipextractor.util.bindFn(this.fileUploadError_, this, entry, workerCompleteCallback),
-        zipextractor.util.bindFn(this.fileUploadProgress_, this, entry));
+        zipextractor.util.bindFn(this.fileUploadProgress_, this, entry),
+        zipextractor.util.bindFn(this.fileUploadAborted_, this, entry, workerCompleteCallback));
         
     this.fileManager_.insertBlob(blob, entry.name, zip.getMimeType(entry.name), parentId, callbacks);
 };
@@ -483,10 +486,6 @@ zipextractor.Session.prototype.fileUploadComplete_ = function(entry, workerCompl
 
 zipextractor.Session.prototype.fileUploadError_ = function(entry, workerCompleteCallback, error, message) {
     this.incrementSessionProgress_(entry, zipextractor.Session.ENTRY_OVERHEAD_BYTES_);
-    if (error == driveapi.FileManager.ErrorType.REQUEST_ABORTED) {
-        this.fileUploadAborted_(entry, workerCompleteCallback, message);
-        return;
-    }
 
     entry.uploadError = error;
     entry.message = message;
@@ -497,6 +496,8 @@ zipextractor.Session.prototype.fileUploadError_ = function(entry, workerComplete
 
 
 zipextractor.Session.prototype.fileUploadAborted_ = function(entry, workerCompleteCallback, message) {
+    this.incrementSessionProgress_(entry, zipextractor.Session.ENTRY_OVERHEAD_BYTES_);
+  
     entry.aborted = true;
     entry.message = message;
     this.updateEntryState_(entry, zipextractor.state.EntryState.UPLOAD_ABORTED, message);
@@ -545,10 +546,6 @@ zipextractor.Session.prototype.folderInsertComplete_ = function(entry, workerCom
 
 zipextractor.Session.prototype.folderInsertError_ = function(entry, workerCompleteCallback, error, message) {
     this.incrementSessionProgress_(entry, zipextractor.Session.ENTRY_OVERHEAD_BYTES_);
-    if (error == driveapi.FileManager.ErrorType.REQUEST_ABORTED) {
-        this.folderInsertAborted_(entry, workerCompleteCallback, message);
-        return;
-    }
     
     entry.uploadError = error;
     entry.message = message;
@@ -566,6 +563,8 @@ zipextractor.Session.prototype.folderInsertError_ = function(entry, workerComple
 
 
 zipextractor.Session.prototype.folderInsertAborted_ = function(entry, workerCompleteCallback, message) {
+    this.incrementSessionProgress_(entry, zipextractor.Session.ENTRY_OVERHEAD_BYTES_);
+    
     entry.aborted = true;
     entry.message = message;
     this.updateEntryState_(entry, zipextractor.state.EntryState.UPLOAD_ABORTED, message);
