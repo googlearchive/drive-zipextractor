@@ -45,9 +45,16 @@ zipextractor.Presenter = function(appConfig) {
     this.sharingLoaded_ = false;
     this.currentSession_ = null;
     
-    this.hasDownloadBeenRetried_ = false;
+    this.hasDownloadBeenAutoRetried_ = false;
     this.lastDownloadId_ = null;
 };
+
+
+/**
+ * Flag indicating whether the app is in DEBUG mode. If set, authorization will be skipped,
+ * and the app will have limited local functionality for ZIP processing, download, etc. 
+ */
+zipextractor.Presenter.IS_DEBUG_ = false;
 
 
 /**
@@ -65,6 +72,10 @@ zipextractor.Presenter.prototype.onHtmlBodyLoaded = function() {
     if (this.apiLoaded_) {
         this.authorize_(true /* isInvokedByApp */);
     }
+    
+    if (zipextractor.Presenter.IS_DEBUG_) {
+        this.processRequestFromState_();
+    }
 };
  
 
@@ -79,11 +90,11 @@ zipextractor.Presenter.prototype.onGapiClientLoaded = function() {
     
     this.apiLoaded_ = true;
     this.setState_(zipextractor.state.SessionState.API_LOADED);
-    
+
     if (this.htmlBodyLoaded_) {
         this.authorize_(true /* isInvokedByApp */);        
     }
-    
+
     // Load sharing widget.
     gapi.load('drive-share', zipextractor.util.bindFn(this.sharingLoadComplete_, this));
 };
@@ -129,6 +140,10 @@ zipextractor.Presenter.prototype.setState_ = function(newState, opt_data) {
 
 
 zipextractor.Presenter.prototype.authorize_ = function(isInvokedByApp) {
+    if (zipextractor.Presenter.IS_DEBUG_) {
+        return;
+    }
+  
     var state = isInvokedByApp ?
         zipextractor.state.SessionState.AUTH_PENDING_AUTO :
         zipextractor.state.SessionState.AUTH_PENDING_USER;
@@ -160,7 +175,7 @@ zipextractor.Presenter.prototype.processRequestFromState_ = function() {
     
    if (this.urlStateParser_.isForOpen()) {
         // Download the file, read the ZIP, update UI.
-        this.extractDriveFileById_(this.urlStateParser_.getFileId());
+        this.downloadFileById_(this.urlStateParser_.getFileId());
     } else {
         // Create New scenario, launched in zero state; setup new session UI.
         this.startNewSession_();
@@ -174,13 +189,13 @@ zipextractor.Presenter.prototype.startNewSession_ = function() {
 };
 
 
-zipextractor.Presenter.prototype.extractDriveFileById_ = function(id) {
+zipextractor.Presenter.prototype.downloadFileById_ = function(id) {
     // Store the most recent download ID to support retry.
     this.lastDownloadId_ = id;
     
     this.setState_(zipextractor.state.SessionState.DOWNLOADING_METADATA);
     var callbacks = this.fileManager_.generateCallbacks(
-        zipextractor.util.bindFn(this.extractDriveFile_, this),
+        zipextractor.util.bindFn(this.downloadFile_, this),
         zipextractor.util.bindFn(this.onDownloadError_, this),
         undefined /* progressCallback */,
         zipextractor.util.bindFn(this.onDownloadAborted_, this));
@@ -189,7 +204,7 @@ zipextractor.Presenter.prototype.extractDriveFileById_ = function(id) {
 };
 
 
-zipextractor.Presenter.prototype.extractDriveFile_ = function(file) {
+zipextractor.Presenter.prototype.downloadFile_ = function(file) {
     this.setState_(zipextractor.state.SessionState.DOWNLOADING, file);
     var callbacks = this.fileManager_.generateCallbacks(
         zipextractor.util.bindFn(this.onDownloadSuccess_, this),
@@ -210,9 +225,9 @@ zipextractor.Presenter.prototype.onDownloadSuccess_ = function(file, blob) {
 
 zipextractor.Presenter.prototype.onDownloadError_ = function(error, message) {
   // Auto-retry download once.
-  if (!this.hasDownloadBeenRetried_) {
-    this.hasDownloadBeenRetried_ = true;
-    this.extractDriveFileById_(this.lastDownloadId_);
+  if (!this.hasDownloadBeenAutoRetried_) {
+    this.hasDownloadBeenAutoRetried_ = true;
+    this.downloadFileById_(this.lastDownloadId_);
   } else {
     this.setState_(zipextractor.state.SessionState.DOWNLOAD_ERROR, message);    
   }
@@ -302,6 +317,8 @@ zipextractor.Presenter.prototype.reset_ = function() {
         this.currentSession_ = null;
         this.model_.clear(); 
     }
+    this.lastDownloadId_ = null;
+    this.hasDownloadBeenAutoRetried_ = false;
 };
 
 
@@ -313,7 +330,7 @@ zipextractor.Presenter.prototype.VIEW__authRequested = function() {
 zipextractor.Presenter.prototype.VIEW__driveFileChosen = function(partialFile) {
     // File as returned from Picker is not a complete Drive File resource.
     // Must get full metadata to retrieve download URL.
-    this.extractDriveFileById_(partialFile.id);
+    this.downloadFileById_(partialFile.id);
 };
 
 
@@ -395,6 +412,12 @@ zipextractor.Presenter.prototype.VIEW__viewExtractedFiles = function() {
 
 zipextractor.Presenter.prototype.VIEW__retryErrors = function() {
     this.extract_(true /* isForRetry */);
+};
+
+
+zipextractor.Presenter.prototype.VIEW__retryDownload = function() {
+  this.hasDownloadBeenAutoRetried_ = false;
+  this.downloadFileById_(this.lastDownloadId_);  
 };
 
 

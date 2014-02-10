@@ -39,6 +39,7 @@ zipextractor.View = function(presenter, pickerManager) {
     this.rateAppButton = null;
     this.viewFilesButton = null;
     this.retryErrorsButton = null;
+    this.retryDownloadButton = null;
     this.shareFilesButton = null;
     this.cancelDownloadButton = null;
     
@@ -96,6 +97,7 @@ zipextractor.View.prototype.attachDom_ = function() {
     this.rateAppButton = document.getElementById('rateAppButton');
     this.viewFilesButton = document.getElementById('viewFilesButton');
     this.retryErrorsButton = document.getElementById('retryErrorsButton');
+    this.retryDownloadButton = document.getElementById('retryDownloadButton');    
     this.shareFilesButton = document.getElementById('shareFilesButton');
     this.cancelDownloadButton = document.getElementById('cancelDownloadButton');
     
@@ -139,6 +141,7 @@ zipextractor.View.prototype.attachListeners_ = function() {
     this.shareFilesButton.onclick = zipextractor.util.bindFn(this.handleShareFilesButtonClick_, this);
     this.viewFilesButton.onclick = zipextractor.util.bindFn(this.handleViewFilesButtonClick_, this);
     this.retryErrorsButton.onclick = zipextractor.util.bindFn(this.handleRetryErrorsButtonClick_, this);
+    this.retryDownloadButton.onclick = zipextractor.util.bindFn(this.handleRetryDownloadButtonClick_, this);
     this.cancelDownloadButton.onclick = zipextractor.util.bindFn(this.handleCancelDownloadButtonClick_, this);
     this.downloadChromeButton.onclick = zipextractor.util.bindFn(this.handleDownloadChromeButtonClick_, this);
     this.downloadFirefoxButton.onclick = zipextractor.util.bindFn(this.handleDownloadFirefoxButtonClick_, this);
@@ -218,10 +221,10 @@ zipextractor.View.prototype.updateState = function(newState, oldState, opt_data)
         case zipextractor.state.SessionState.DOWNLOADING_METADATA:
             this.showEl_(this.chooseFileFromDriveButton, false);
             this.showEl_(this.chooseLocalFileButton, false);
-            // this.showEl_(this.zipDropAreaDiv, false);
             this.zipDropAreaDiv.style.visibility = 'hidden';
             this.showEl_(this.cancelDownloadButton, true);    
-            this.enableEl_(this.cancelDownloadButton, true);    
+            this.enableEl_(this.cancelDownloadButton, true);
+            this.showEl_(this.retryDownloadButton, false);   
             
             this.updatePrimaryStatus_(true, true, 'Preparing to download file...');
             break;
@@ -501,6 +504,7 @@ zipextractor.View.prototype.setupForNewSession_ = function() {
     this.showEl_(this.changeDestinationFolderButton, false);
     this.showEl_(this.viewFilesButton, false);
     this.showEl_(this.retryErrorsButton, false);
+    this.showEl_(this.retryDownloadButton, false);
     this.showEl_(this.shareFilesButton, false);
     this.showEl_(this.resetButton, false);
     this.showEl_(this.rateAppButton, false);
@@ -543,7 +547,6 @@ zipextractor.View.prototype.updateUiForExtractionCancelRequested_ = function() {
 
 zipextractor.View.prototype.updateUiForExtractionCanceled_ = function() {
     this.showEl_(this.cancelExtractionButton, false);
-    
     this.showEl_(this.viewFilesButton, true);
     this.showEl_(this.retryErrorsButton, false);
     this.showEl_(this.resetButton, true);
@@ -553,10 +556,9 @@ zipextractor.View.prototype.updateUiForExtractionCanceled_ = function() {
 
 
 zipextractor.View.prototype.updateUiForDownloadError_ = function(error) {
-    this.showEl_(this.cancelDownloadButton, false);    
+    this.showEl_(this.cancelDownloadButton, false);
+    this.showEl_(this.retryDownloadButton, true);    
     this.showEl_(this.resetButton, true);
-    
-    // TODO: Retry Download capability here. Perhaps with a dedicated button.
     
     this.updatePrimaryStatus_(true, false, 'Unable to download file. (' + error + ')');
 };
@@ -690,8 +692,14 @@ zipextractor.View.prototype.handleViewFilesButtonClick_ = function(e) {
     this.presenter_.VIEW__viewExtractedFiles();
 };
 
+
 zipextractor.View.prototype.handleRetryErrorsButtonClick_ = function(e) {
     this.presenter_.VIEW__retryErrors();
+};
+
+
+zipextractor.View.prototype.handleRetryDownloadButtonClick_ = function(e) {
+    this.presenter_.VIEW__retryDownload();
 };
 
 
