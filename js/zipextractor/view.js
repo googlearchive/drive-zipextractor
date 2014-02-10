@@ -213,7 +213,8 @@ zipextractor.View.prototype.updateState = function(newState, oldState, opt_data)
             
         case zipextractor.state.SessionState.DOWNLOAD_CANCELED:
             this.showEl_(this.cancelDownloadButton, false);
-            this.enableEl_(this.cancelDownloadButton, true);    
+            this.enableEl_(this.cancelDownloadButton, true);
+            this.showEl_(this.retryDownloadButton, true);  
             this.showEl_(this.resetButton, true);
             this.updatePrimaryStatus_(true, false, 'Download canceled.');
             break;
