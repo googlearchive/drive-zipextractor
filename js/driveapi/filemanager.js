@@ -249,14 +249,14 @@ driveapi.FileManager.prototype.sendXhr_ = function(method, baseUrl, params, body
     xhr.onreadystatechange = function(e) {   
         if (xhr.readyState == 4) {
             self.removePendingXhr_(xhr);
-            if (xhr.status == 200) {
-                if (xhr.response) {
-                    self.invokeCallback_(callbacks, driveapi.FileManager.CallbackType_.SUCCESS, xhr.response);
-                } else {
-                    var message = self.getErrorMessage_(driveapi.FileManager.ErrorType.REQUEST_ABORTED);
-                    self.invokeCallback_(callbacks, driveapi.FileManager.CallbackType_.ABORT, message);
-                }
+            if (xhr.status == 200 && xhr.response) {
+                self.invokeCallback_(callbacks, driveapi.FileManager.CallbackType_.SUCCESS, xhr.response);
+            } else if (xhr.status == 0) {
+                // Aborted
+                var message = self.getErrorMessage_(driveapi.FileManager.ErrorType.REQUEST_ABORTED);
+                self.invokeCallback_(callbacks, driveapi.FileManager.CallbackType_.ABORT, message);
             } else {
+                // Error or no xhr response.              
                 var error = self.getErrorFromXhrStatus_(xhr.status);
                 self.invokeCallback_(
                     callbacks, 
