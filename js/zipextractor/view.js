@@ -225,7 +225,8 @@ zipextractor.View.prototype.updateState = function(newState, oldState, opt_data)
             this.zipDropAreaDiv.style.visibility = 'hidden';
             this.showEl_(this.cancelDownloadButton, true);    
             this.enableEl_(this.cancelDownloadButton, true);
-            this.showEl_(this.retryDownloadButton, false);   
+            this.showEl_(this.retryDownloadButton, false);
+            this.showEl_(this.resetButton, false);
             
             this.updatePrimaryStatus_(true, true, 'Preparing to download file...');
             break;
