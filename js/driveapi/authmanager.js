@@ -22,7 +22,6 @@
  
 driveapi.AuthManager = function(appConfig) {
     this.appConfig_ = appConfig;
-    this.token_ = null;
 };
 
 
@@ -44,10 +43,7 @@ driveapi.AuthManager.prototype.authorize = function(isImmediate, authResultCallb
 
 
 driveapi.AuthManager.prototype.getToken = function() {
-    if (!this.token_) {
-        this.token_ = gapi.auth.getToken();
-    }
-    return this.token_;
+    return gapi.auth.getToken();
 };
 
 
