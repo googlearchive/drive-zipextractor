@@ -250,13 +250,14 @@ driveapi.FileManager.prototype.sendXhr_ = function(method, baseUrl, params, body
         if (xhr.readyState == 4) {
             self.removePendingXhr_(xhr);
             if (xhr.status == 200 && xhr.response) {
+                // Success
                 self.invokeCallback_(callbacks, driveapi.FileManager.CallbackType_.SUCCESS, xhr.response);
-            } else if (xhr.status == 0) {
-                // Aborted
+            } else if (xhr.status == 0 || (xhr.status == 200 && !xhr.response)) {
+                // Aborted, or null response with 'success' (200) code. Obvserved to mean 'abort'.
                 var message = self.getErrorMessage_(driveapi.FileManager.ErrorType.REQUEST_ABORTED);
                 self.invokeCallback_(callbacks, driveapi.FileManager.CallbackType_.ABORT, message);
             } else {
-                // Error or no xhr response.              
+                // Error              
                 var error = self.getErrorFromXhrStatus_(xhr.status);
                 self.invokeCallback_(
                     callbacks, 
