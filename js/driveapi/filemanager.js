@@ -250,7 +250,11 @@ driveapi.FileManager.prototype.sendXhr_ = function(method, baseUrl, params, body
         if (xhr.readyState == 4) {
             self.removePendingXhr_(xhr);
             if (xhr.status == 200 && xhr.response) {
-                // Success
+                // Success. Return XHR response as JSON.
+                // Note: Internet Explorer 10 (and others?) does not accept xhr.responseType = 'json'.
+                // In this case, must parse manually.
+                var response = (xhr.responseType == driveapi.FileManager.XhrResponseType_.JSON) ? 
+                    xhr.response : JSON.parse(xhr.response);
                 self.invokeCallback_(callbacks, driveapi.FileManager.CallbackType_.SUCCESS, xhr.response);
             } else if (xhr.status == 0 || (xhr.status == 200 && !xhr.response)) {
                 // Aborted, or null response with 'success' (200) code. Obvserved to mean 'abort'.
