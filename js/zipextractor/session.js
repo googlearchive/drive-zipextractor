@@ -103,6 +103,11 @@ zipextractor.Session.prototype.close = function() {
 };
 
 
+zipextractor.Session.prototype.hasBeenRetried = function() {
+  return this.hasBeenRetried_;
+};
+
+
 zipextractor.Session.prototype.hasErrors = function() {
     var rootEntry = this.model_.getEntryTree();
     if (this.isErrorState_(rootEntry.state)) {
@@ -110,11 +115,6 @@ zipextractor.Session.prototype.hasErrors = function() {
     } else {
         return this.childEntriesHaveErrors_(rootEntry);
     }
-};
-
-
-zipextractor.Session.prototype.hasBeenRetried = function() {
-  return this.hasBeenRetried_;
 };
 
 
@@ -128,6 +128,35 @@ zipextractor.Session.prototype.childEntriesHaveErrors_ = function(entry) {
         }
     }
     return false;
+};
+
+
+zipextractor.Session.prototype.hasAuthErrors = function() {
+    var rootEntry = this.model_.getEntryTree();
+    if (this.entryHasAuthError_(rootEntry)) {
+        return true;
+    } else {
+        return this.childEntriesHaveAuthErrors_(rootEntry);
+    }
+};
+
+
+zipextractor.Session.prototype.childEntriesHaveAuthErrors_ = function(entry) {
+    for (var entryKey in entry.children) {        
+        var childEntry = entry.children[entryKey];
+        if (this.entryHasAuthError_(childEntry)) {
+            return true;
+        } else if (childEntry.directory && this.childEntriesHaveAuthErrors_(childEntry)) {
+            return true;
+        }
+    }
+    return false;
+};
+
+
+zipextractor.Session.prototype.entryHasAuthError_ = function(entry) {
+  return (entry.uploadError == driveapi.FileManager.ErrorType.AUTH_ERROR) && 
+      (entry.state == zipextractor.state.EntryState.UPLOAD_ERROR);  
 };
 
 
