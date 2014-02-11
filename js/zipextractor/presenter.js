@@ -235,6 +235,11 @@ zipextractor.Presenter.prototype.onDownloadError_ = function(error, message) {
 
 
 zipextractor.Presenter.prototype.onDownloadProgress_ = function(current, total) {
+    // Don't show latent progress events that come in after download has been cancelled.
+    if (this.state_ == zipextractor.state.SessionState.DOWNLOAD_CANCELED) {
+      return;
+    }
+    
     this.view_.handleDownloadProgress(current, total);
     
     if (current === total) {
