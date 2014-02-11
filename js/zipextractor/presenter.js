@@ -224,13 +224,22 @@ zipextractor.Presenter.prototype.onDownloadSuccess_ = function(file, blob) {
 
 
 zipextractor.Presenter.prototype.onDownloadError_ = function(error, message) {
-  // Auto-retry download once.
-  if (!this.hasDownloadBeenAutoRetried_) {
-    this.hasDownloadBeenAutoRetried_ = true;
-    this.downloadFileById_(this.lastDownloadId_);
-  } else {
-    this.setState_(zipextractor.state.SessionState.DOWNLOAD_ERROR, message);    
-  }
+    // Auto-retry download once, including for both auth and transient errors.
+    if (!this.hasDownloadBeenAutoRetried_) {
+        this.hasDownloadBeenAutoRetried_ = true;
+      
+        // Check for auth error. Attempt re-auth in the background, then retry download.
+        if (error == driveapi.FileManager.ErrorType.AUTH_ERROR) {
+            this.setState_(zipextractor.state.SessionState.AUTH_PENDING_AUTO);                 
+            this.authManager_.authorize(
+                true /* isInvokedByApp */, 
+                zipextractor.util.bindFn(this.downloadFileById_, this, this.lastDownloadId_));
+        } else {      
+            this.downloadFileById_(this.lastDownloadId_);
+        }
+    } else {
+        this.setState_(zipextractor.state.SessionState.DOWNLOAD_ERROR, message);    
+    }
 };
 
 

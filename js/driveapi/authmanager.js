@@ -32,8 +32,14 @@ driveapi.AuthManager.prototype.authorize = function(isImmediate, authResultCallb
         'scope': this.appConfig_.getScopes(),
         'immediate': isImmediate
     };
-
-    gapi.auth.authorize(authParams, authResultCallback);
+    
+    try {
+      gapi.auth.authorize(authParams, authResultCallback);
+    } catch (err) {
+      var authResult = {};
+      authResult.error = err;
+      authResultCallback(authResult);
+    }
 };
 
 
