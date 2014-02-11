@@ -21,10 +21,8 @@ zipextractor.util.IS_NATIVE_BIND_ =
 
 zipextractor.util.bindFn = function(fn, selfObj, var_args) {
   if (zipextractor.util.IS_NATIVE_BIND_) {
-        window.console.log('native bind');
     return fn.call.apply(fn.bind, arguments);
   } else {
-        window.console.log('non native bind');
     if (arguments.length > 2) {
       var boundArgs = Array.prototype.slice.call(arguments, 2);
       return function() {
