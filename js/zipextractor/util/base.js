@@ -15,6 +15,29 @@
 
 zipextractor.util = {};
 
+zipextractor.util.IS_NATIVE_BIND_ =
+    Function.prototype.bind && 
+    Function.prototype.bind.toString().indexOf('native code') != -1;
+
 zipextractor.util.bindFn = function(fn, selfObj, var_args) {
-   return /** @type {!Function} */ (fn.call.apply(fn.bind, arguments));
+  if (zipextractor.util.IS_NATIVE_BIND_) {
+        window.console.log('native bind');
+    return fn.call.apply(fn.bind, arguments);
+  } else {
+        window.console.log('non native bind');
+    if (arguments.length > 2) {
+      var boundArgs = Array.prototype.slice.call(arguments, 2);
+      return function() {
+        var newArgs = Array.prototype.slice.call(arguments);
+        Array.prototype.unshift.apply(newArgs, boundArgs);
+        return fn.apply(selfObj, newArgs);
+      };
+    } else {
+      return function() {
+        return fn.apply(selfObj, arguments);
+      };
+    }    
+  }
 };
+
+      
