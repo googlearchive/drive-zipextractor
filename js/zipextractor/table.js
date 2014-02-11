@@ -171,8 +171,6 @@ zipextractor.Table.prototype.generateFileTableRow_ = function(entry, depth) {
     img.className = 'tableRowIcon';
     img.setAttribute('src', imgSrc);
     img.setAttribute('alt', altText);
-    img.style.width = '16px';
-    img.style.height = '16px';
 
     filenameCell.appendChild(img);
     filenameCell.appendChild(nameSpan);

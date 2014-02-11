@@ -149,6 +149,8 @@ a:hover {
 
 .tableRowIcon {
   padding-left: 2px;
+  max-width: 16px;
+  max-height: 16px;
 }
 
 .tableRowNameSpan {
