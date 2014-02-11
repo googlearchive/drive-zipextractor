@@ -389,8 +389,8 @@ zipextractor.View.prototype.updateEntryIconForState_ = function(entry, complete)
 
 // TODO - make a 'download progress' state (?)
 zipextractor.View.prototype.handleDownloadProgress = function(current, total) {
-    // Initial download amount is 10%, to show progress bar activity while waiting on first bytes.
-    var percent = 10 + (90 * (current / total));    
+    // Initial download amount is 5%, to show progress bar activity while waiting on first bytes.
+    var percent = 5 + (95 * (current / total));    
     this.updatePrimaryStatus_(true, false, '', true, true, Math.round(percent));
 };
 
