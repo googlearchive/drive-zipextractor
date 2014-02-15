@@ -43,12 +43,12 @@ table {
   font-size: 1px;
   overflow: hidden;
   display: block;
+  padding-top: 10px;  
 }
 
 .g-plusone-container {
   float: left;
   display: inline-block;
-  padding-left: 15px;
 }
 
 .fb-like-container {
