@@ -113,13 +113,13 @@ a:hover {
     background-color: #ECF5FB; 
     padding-top: 6px;
     padding-bottom: 6px;
-    line-height: 130%;
     text-align: center;
 }
 
 .footerMain {
-  display:block;
+  display: block;
   color: #555;
+  line-height: 150%;
 }
 
 .footerAboutApp {
