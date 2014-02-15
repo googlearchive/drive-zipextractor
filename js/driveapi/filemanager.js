@@ -195,22 +195,21 @@ driveapi.FileManager.prototype.downloadFile = function(file, callbacks) {
 };
 
 
-driveapi.FileManager.prototype.insertBlob = function(blob, name, mimeType, parentId, callbacks) {
+driveapi.FileManager.prototype.insertBlob = function(blob, name, parentId, callbacks) {
     this.blobToBase64_(
         blob, 
-        driveapi.bindFn(this.insertFileAsBase64_, this, name, mimeType, parentId, callbacks));
+        driveapi.bindFn(this.insertFileAsBase64_, this, name, parentId, callbacks));
 };
 
 
-driveapi.FileManager.prototype.insertFileAsBase64_ = function(name, mimeType, parentId, callbacks, base64Data) {
-    var metadata = this.generateDriveFileMetadata_(name, mimeType, parentId);
+driveapi.FileManager.prototype.insertFileAsBase64_ = function(name, parentId, callbacks, base64Data) {
+    var metadata = this.generateDriveFileMetadata_(name, parentId);
     
     var multipartRequestBody =
         driveapi.FileManager.MULTIPART_DELIMITER_ +
         'Content-Type: ' + driveapi.FileManager.MimeType_.JSON + driveapi.FileManager.CRLF_ + driveapi.FileManager.CRLF_ +
         JSON.stringify(metadata) +
         driveapi.FileManager.MULTIPART_DELIMITER_ +
-        'Content-Type: ' + mimeType + driveapi.FileManager.CRLF_ +
         'Content-Transfer-Encoding: base64' + driveapi.FileManager.CRLF_ + 
         driveapi.FileManager.CRLF_ +
         base64Data +
@@ -228,7 +227,7 @@ driveapi.FileManager.prototype.insertFileAsBase64_ = function(name, mimeType, pa
 
 
 driveapi.FileManager.prototype.insertFolder = function(name, parentId, callbacks) {
-    var metadata = this.generateDriveFileMetadata_(name, driveapi.FileManager.MimeType_.FOLDER, parentId);
+    var metadata = this.generateDriveFileMetadata_(name, parentId, driveapi.FileManager.MimeType_.FOLDER);
     
     this.sendXhr_(
         driveapi.FileManager.Method_.POST,
@@ -320,14 +319,17 @@ driveapi.FileManager.prototype.sendXhr_ = function(method, baseUrl, params, body
 };
 
 
-driveapi.FileManager.prototype.generateDriveFileMetadata_ = function(name, mimeType, parentId) {
+driveapi.FileManager.prototype.generateDriveFileMetadata_ = function(name, opt_parentId, opt_mimeType) {
     var metadata = {
-      'title': name,
-      'mimeType': mimeType
+      'title': name
     };
 
-    if (parentId) {
-        metadata.parents = [{'id': parentId }];
+    if (opt_parentId) {
+        metadata.parents = [{'id': opt_parentId }];
+    }
+    
+    if (opt_mimeType) {
+        metadata.mimeType = opt_mimeType;
     }
     
     return metadata;

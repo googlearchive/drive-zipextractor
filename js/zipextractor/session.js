@@ -493,7 +493,7 @@ zipextractor.Session.prototype.uploadFile_ = function(entry, parentId, blob, wor
         zipextractor.util.bindFn(this.fileUploadProgress_, this, entry),
         zipextractor.util.bindFn(this.fileUploadAborted_, this, entry, workerCompleteCallback));
         
-    this.fileManager_.insertBlob(blob, entry.name, zip.getMimeType(entry.name), parentId, callbacks);
+    this.fileManager_.insertBlob(blob, entry.name, parentId, callbacks);
 };
 
 
