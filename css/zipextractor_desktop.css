@@ -41,7 +41,12 @@ table {
 
 .g-plusone-container {
   display: inline-block;
-  padding-left: 10px;
+  padding-left: 15px;
+}
+
+.fb-like-container {
+  display: inline-block;
+  padding-left: 15px;  
 }
 
 .tableHeaderRow {

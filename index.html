@@ -36,7 +36,10 @@
           </div>
           <div class="g-plusone-container">
             <div class="g-plusone" data-size="medium" data-annotation="none"></div>
-          </div>    
+          </div>
+          <div class="fb-like-container">
+            <div class="fb-like" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button" data-action="like" data-show-faces="false" data-share="false"></div>  
+          </div>          
       </div>
         <div class="maincontent">
           <hr>      
@@ -129,11 +132,13 @@
             <a href="mailto:zipextractor@gmail.com?subject=Zip%20Extractor%20support">zipextractor@gmail.com</a>
           </div>
           <div class="footerVersion">
-            Version 0.998 Beta
+            Version 0.9991 Beta
           </div>
         </div>
       </div>  
     </div>
+    
+    <div id="fb-root"></div>
 
     <script type="text/javascript" src="js/zip/zip.js"></script>
 
@@ -150,6 +155,16 @@
         po.src = 'https://apis.google.com/js/platform.js';
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
       })();
+    </script>
+    
+    <script type="text/javascript">
+      (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
     </script>    
  </body>
 </html>
