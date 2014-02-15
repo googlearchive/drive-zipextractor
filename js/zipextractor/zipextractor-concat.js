@@ -13,13 +13,13 @@
 // limitations under the License.
 
 
-zipextractor = {};
+var zipextractor = {};
 zipextractor.config = {};
 zipextractor.state = {};
 
 zipextractor.config.DRIVE_API_CONFIG_DATA = {
     'clientId': '824911851129-6d64j0e08s86ih74l0lu386tqqfv71t9.apps.googleusercontent.com',
-    'appId' :'824911851129',    
+    'appId': '824911851129',    
     'scopes': ['https://www.googleapis.com/auth/drive.file', 'https://www.googleapis.com/auth/drive.install'],
     'apiKey': 'AIzaSyBW4IYnFZLyPFFKtZ2qWJYTlURyyE-Vt_4' 
 };
@@ -576,7 +576,7 @@ zipextractor.Presenter.prototype.SESSION__extractionComplete = function() {
   var hasErrors = this.currentSession_.hasErrors();
   
   // Auto-retry once.
-  if (hasErrors & !this.currentSession_.hasBeenRetried()) {
+  if (hasErrors && !this.currentSession_.hasBeenRetried()) {
     // Check for auth error. Attempt re-auth in the background, then retry session.
     if (this.currentSession_.hasAuthErrors()) {
         this.setState_(zipextractor.state.SessionState.AUTH_PENDING_AUTO);                 

@@ -13,6 +13,6 @@
 // limitations under the License.
 
 
-zipextractor = {};
+var zipextractor = {};
 zipextractor.config = {};
 zipextractor.state = {};

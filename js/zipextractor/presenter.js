@@ -394,7 +394,7 @@ zipextractor.Presenter.prototype.SESSION__extractionComplete = function() {
   var hasErrors = this.currentSession_.hasErrors();
   
   // Auto-retry once.
-  if (hasErrors & !this.currentSession_.hasBeenRetried()) {
+  if (hasErrors && !this.currentSession_.hasBeenRetried()) {
     // Check for auth error. Attempt re-auth in the background, then retry session.
     if (this.currentSession_.hasAuthErrors()) {
         this.setState_(zipextractor.state.SessionState.AUTH_PENDING_AUTO);                 

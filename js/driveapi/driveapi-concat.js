@@ -18,7 +18,7 @@
  * Core methods associated with the driveapi package.
  */
 
-driveapi = {};
+var driveapi = {};
 
 driveapi.IS_NATIVE_BIND_ =
     Function.prototype.bind && 
