@@ -20,6 +20,7 @@ h2 {
     font-weight: normal;
     color: #777777;
     margin: 0;
+    display: inline-block;
 }
 
 td, th {
@@ -36,6 +37,11 @@ table {
     border-collapse: collapse;
     font-size: 13px;
     font-family: Arial;
+}
+
+.zipextractor-gplusone {
+  display: inline-block;
+  padding-left: 10px;
 }
 
 .tableHeaderRow {
