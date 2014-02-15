@@ -1983,6 +1983,8 @@ zipextractor.View.prototype.updateState = function(newState, oldState, opt_data)
             this.updatePrimaryStatus_(true, false, 'Error reading ZIP file: ' + opt_data);
             this.enableEl_(this.chooseFileFromDriveButton, true);
             this.enableEl_(this.chooseLocalFileButton, true);
+            this.showEl_(this.chooseFileFromDriveButton, false);
+            this.showEl_(this.chooseLocalFileButton, false);            
             this.showEl_(this.resetButton, true);
             break;
             
