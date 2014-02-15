@@ -1,0 +1,24 @@
+ZIP Extractor i18n / Internationalization / Localization
+Languages supported: English, Spanish, German, French, Italian, Portuguese
+
+Name:
+{
+  "default": "ZIP Extractor", 
+  "en": "ZIP Extractor", 
+  "es": "ZIP Extractor", 
+  "de": "ZIP-Extractor",
+  "fr": "ZIP Extracteur",
+  "it": "ZIP Estrattore",
+  "pt": "ZIP Extractor"
+}
+
+Description:
+{
+  "default": "Decompress ZIP files to Google Drive", 
+  "en": "Decompress ZIP files to Google Drive", 
+  "es": "Descomprimir archivos ZIP a Google Drive", 
+  "de": "Entpacken von ZIP-Dateien zu Google Drive",
+  "fr": "Décompresser des fichiers ZIP à Google Drive",
+  "it": "Decomprimere i file ZIP a Google Drive",
+  "pt": "Descompacte arquivos ZIP a Google Drive"
+}
