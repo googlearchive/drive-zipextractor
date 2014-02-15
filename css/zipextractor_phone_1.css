@@ -39,14 +39,24 @@ table {
     font-family: Arial;
 }
 
+.social-buttons-container {
+  font-size: 1px;
+  overflow: hidden;
+  display: block;
+}
+
 .g-plusone-container {
+  float: left;
   display: inline-block;
   padding-left: 15px;
+  width: 75px;
 }
 
 .fb-like-container {
+  float: left;
   display: inline-block;
   padding-left: 15px;  
+  width: 110px;
 }
 
 .tableHeaderRow {
