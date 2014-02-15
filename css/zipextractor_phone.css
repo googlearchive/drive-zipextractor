@@ -47,9 +47,19 @@ a:hover {
     text-decoration: underline;
 }
 
+.header {
+    display: inline-block;
+}
+
 .header-icon {
     vertical-align: bottom;
     padding-right: 8px;
+    display: inline-block;
+}
+
+.header-icon-img {
+  height: 48px;
+  width: 48px;  
 }
 
 .primaryStatusProgressContainer {
@@ -123,6 +133,10 @@ a:hover {
 
 .fileTableDiv {
     padding-top: 16px;
+}
+
+.fileTableHeaderCaption {
+  display: inline-block;
 }
 
 .fileTableHeader {

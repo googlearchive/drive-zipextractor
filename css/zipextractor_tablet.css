@@ -47,9 +47,19 @@ a:hover {
     text-decoration: underline;
 }
 
+.header {
+    display: inline-block;
+}
+
 .header-icon {
     vertical-align: bottom;
     padding-right: 8px;
+    display: inline-block;
+}
+
+.header-icon-img {
+  height: 48px;
+  width: 48px;  
 }
 
 .primaryStatusProgressContainer {
@@ -111,6 +121,10 @@ a:hover {
   color: #555;
 }
 
+.footerAboutApp {
+  padding-bottom: 10px;
+}
+
 .footerCopyright {
 }
 
@@ -124,10 +138,18 @@ a:hover {
     padding-top: 20px;
 }
 
+.fileTableHeaderCaption {
+  display: inline-block;
+}
+
 .fileTableHeader {
     font-size:18px;
     color: #c00000;
     padding-bottom: 6px;
+}
+
+.footerAboutApp {
+  
 }
 
 .fileTable {
