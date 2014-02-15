@@ -122,6 +122,10 @@ a:hover {
   color: #555;
 }
 
+.footerAboutApp {
+  margin: 0 15px;
+}
+
 .footerCopyright {
 }
 
