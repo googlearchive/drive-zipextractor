@@ -21,10 +21,10 @@ handlers:
   upload: favicon.png
   secure: always
 
-- url: /google5f963f55367aa33e.html
-  static_files: google5f963f55367aa33e.html
-  upload: google5f963f55367aa33e.html
-  secure: always  
+- url: /robots.txt
+  static_files: robots.txt
+  upload: robots.txt
+  secure: always
 
 - url: /css
   static_dir: css
