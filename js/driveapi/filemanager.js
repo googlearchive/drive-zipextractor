@@ -182,7 +182,7 @@ driveapi.FileManager.prototype.downloadFile = function(file, callbacks) {
     var successCallback = callbacks[driveapi.FileManager.CallbackType_.SUCCESS];
     
     callbacks[driveapi.FileManager.CallbackType_.SUCCESS] = 
-        zipextractor.util.bindFn(successCallback, this, file);
+        driveapi.util.bindFn(successCallback, this, file);
     
     this.sendXhr_(
         driveapi.FileManager.Method_.GET,
@@ -257,7 +257,7 @@ driveapi.FileManager.prototype.sendXhr_ = function(method, baseUrl, params, body
                   response = JSON.parse(xhr.response);
                 }
                 self.invokeCallback_(callbacks, driveapi.FileManager.CallbackType_.SUCCESS, response);
-            } else if (xhr.status == 0 || (xhr.status == 200 && !xhr.response)) {
+            } else if (xhr.status === 0 || (xhr.status === 200 && !xhr.response)) {
                 // Aborted, or null response with 'success' (200) code. Obvserved to mean 'abort'.
                 var message = self.getErrorMessage_(driveapi.FileManager.ErrorType.REQUEST_ABORTED);
                 self.invokeCallback_(callbacks, driveapi.FileManager.CallbackType_.ABORT, message);
@@ -289,18 +289,20 @@ driveapi.FileManager.prototype.sendXhr_ = function(method, baseUrl, params, body
     }
     if (callbacks[driveapi.FileManager.CallbackType_.ERROR]) {
         xhr.onerror = function(e) {
-            var message = '';
-            if (e) {
-                message = e.error;
-                if (!message && e.target) {
-                    message = e.target.status;
-                }
+            var error = self.getErrorFromXhrStatus_(xhr.status);
+            var message = self.getErrorMessage_(error);
+            message += ' [' + xhr.statusText + ']';
+
+            if (e && e.error) {
+                message += ' - ' + e.error;
             }
             
-            var error = driveapi.FileManager.ErrorType.UNKNOWN; 
-            
-            self.removePendingXhr_(xhr);
-            self.invokeCallback_(callbacks, driveapi.FileManager.CallbackType_.ERROR, error, message);
+            self.removePendingXhr_(xhr);      
+            self.invokeCallback_(
+                callbacks, 
+                driveapi.FileManager.CallbackType_.ERROR,
+                error,
+                self.getErrorMessage_(error));
         };
     }
     
