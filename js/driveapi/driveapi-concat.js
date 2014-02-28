@@ -287,7 +287,7 @@ driveapi.FileManager.prototype.downloadFile = function(file, callbacks) {
     var successCallback = callbacks[driveapi.FileManager.CallbackType_.SUCCESS];
     
     callbacks[driveapi.FileManager.CallbackType_.SUCCESS] = 
-        driveapi.util.bindFn(successCallback, this, file);
+        driveapi.bindFn(successCallback, this, file);
     
     this.sendXhr_(
         driveapi.FileManager.Method_.GET,
