@@ -1986,6 +1986,7 @@ zipextractor.View.prototype.updateState = function(newState, oldState, opt_data)
             this.showEl_(this.chooseFileFromDriveButton, false);
             this.showEl_(this.chooseLocalFileButton, false);            
             this.showEl_(this.resetButton, true);
+            this.showEl_(this.cancelExtractionButton, false);
             break;
             
         case zipextractor.state.SessionState.MODEL_BUILDING:
