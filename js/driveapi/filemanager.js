@@ -203,12 +203,7 @@ driveapi.FileManager.prototype.insertBlob = function(blob, name, parentId, callb
 
 
 driveapi.FileManager.prototype.insertFileAsBase64_ = function(name, parentId, callbacks, base64Data) {
-    // TODO: Remove this once Drive API properly supports filename-based type detection.
-    var typeFromFilename = zip.getMimeType(name);
-    if (typeFromFilename === "application/octet-stream") {
-      typeFromFilename = null;
-    }
-    var metadata = this.generateDriveFileMetadata_(name, parentId, typeFromFilename);
+    var metadata = this.generateDriveFileMetadata_(name, parentId);
     
     var multipartRequestBody =
         driveapi.FileManager.MULTIPART_DELIMITER_ +
