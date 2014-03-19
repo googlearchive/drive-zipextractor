@@ -3,6 +3,8 @@ ZIP Extractor
 
 Extract (decompress) ZIP files into Google Drive using the Google Drive API.
 
+This app is deployed at: http://zip-extractor.appspot.com/.
+
 This is a pure-Javascript app that makes use of the public Google Drive API to read ZIP files from Google Drive and extract their contents into Google Drive. Hierarchical ZIP files (ZIP files with subfolders) are supported.
 
 The app is based on the drive.file OAuth2 scope, where permission is granted only for individual files that the user authorizes.
@@ -16,7 +18,7 @@ To run this code yourself, it will need to be hosted somewhere. Options for host
 In all cases, a configuration will need to be created in the Google Developers Console, as outlined here:
 https://developers.google.com/drive/web/enable-sdk
 
-Note: The resulting App ID and Client ID generated as part of that process will need to be put into the your app's code. For ZIP Extractor, that configuration information in found in 'config.js'.
+Note: The resulting App ID, Client ID, and API Key generated as part of that process will need to be put into the your app's configuration (in actual code). For ZIP Extractor, that configuration information in found in 'config.js' under the '/js/zipextractor/' directory.
 
 ==========================================================================
 
