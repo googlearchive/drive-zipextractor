@@ -25,12 +25,16 @@ driveapi.AuthManager = function(appConfig) {
 };
 
 
-driveapi.AuthManager.prototype.authorize = function(isImmediate, authResultCallback) {
+driveapi.AuthManager.prototype.authorize = function(isImmediate, authResultCallback, opt_loginHint) {
     var authParams = {
         'client_id': this.appConfig_.getClientId(), 
         'scope': this.appConfig_.getScopes(),
         'immediate': isImmediate
     };
+    
+    if (opt_loginHint) {
+      authParams['login_hint'] = opt_loginHint;
+    }
     
     try {
       gapi.auth.authorize(authParams, authResultCallback);
