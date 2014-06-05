@@ -251,6 +251,8 @@ zipextractor.Presenter.prototype.onHtmlBodyLoaded = function() {
         return;
     }
     
+    this.parseUrlState_();
+    
     if (this.apiLoaded_) {
         this.authorize_(true /* isInvokedByApp */);
     }
@@ -272,6 +274,8 @@ zipextractor.Presenter.prototype.onGapiClientLoaded = function() {
     
     this.apiLoaded_ = true;
     this.setState_(zipextractor.state.SessionState.API_LOADED);
+    
+    this.parseUrlState_();
 
     if (this.htmlBodyLoaded_) {
         this.authorize_(true /* isInvokedByApp */);        
@@ -279,6 +283,14 @@ zipextractor.Presenter.prototype.onGapiClientLoaded = function() {
 
     // Load sharing widget.
     gapi.load('drive-share', zipextractor.util.bindFn(this.sharingLoadComplete_, this));
+};
+
+
+zipextractor.Presenter.prototype.parseUrlState_ = function() {
+  if (!this.urlStateParser_.isParsed()) {
+    this.setState_(zipextractor.state.SessionState.READ_URL_STATE);
+    this.urlStateParser_.parseState();
+  }
 };
 
 

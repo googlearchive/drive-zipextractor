@@ -545,6 +545,11 @@ driveapi.FileManager.prototype.blobToBase64_ = function(blob, callback) {
  };
  
  
+ driveapi.UrlStateParser.prototype.isParsed = function() {
+     return (this.state_ != null);
+ };
+
+ 
  driveapi.UrlStateParser.prototype.getState = function() {
      if (!this.state_) {
          this.parseState();
@@ -559,6 +564,11 @@ driveapi.FileManager.prototype.blobToBase64_ = function(blob, callback) {
     this.state_ = rawState ? JSON.parse(rawState) : {};
  };
  
+ 
+ driveapi.UrlStateParser.prototype.getUserId = function() {
+     return this.getState().userId;
+ };
+
 
  driveapi.UrlStateParser.prototype.getFolderId = function() {
      return this.getState().folderId;

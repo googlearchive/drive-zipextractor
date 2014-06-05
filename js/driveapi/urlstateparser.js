@@ -22,6 +22,11 @@
  };
  
  
+ driveapi.UrlStateParser.prototype.isParsed = function() {
+     return (this.state_ != null);
+ };
+
+
  driveapi.UrlStateParser.prototype.getState = function() {
      if (!this.state_) {
          this.parseState();
@@ -29,8 +34,8 @@
      
      return this.state_;
  };
- 
- 
+
+
  driveapi.UrlStateParser.prototype.parseState = function() {
     var rawState = this.getUrlParam_('state');
     this.state_ = rawState ? JSON.parse(rawState) : {};
@@ -53,7 +58,12 @@
          return null;
      }
      return (ids.length && ids.length > 0) ? ids[0] : null;
- };     
+ };
+ 
+
+ driveapi.UrlStateParser.prototype.getUserId = function() {
+     return this.getState().userId;
+ };
 
 
  driveapi.UrlStateParser.prototype.isForCreateNew = function() {
