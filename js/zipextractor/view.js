@@ -192,7 +192,7 @@ zipextractor.View.prototype.updateState = function(newState, oldState, opt_data)
         case zipextractor.state.SessionState.AUTH_ERROR:
             this.authButton.disabled = false;
             this.showEl_(this.authButton, true);
-            this.updatePrimaryStatus_(true, false, 'Authorization error ( ' + opt_data + '). Please authorize manually by clicking "Authorize" below.');
+            this.updatePrimaryStatus_(true, false, 'Authorization error (' + opt_data + '). Please authorize manually by clicking "Authorize" below.');
             break;            
             
         case zipextractor.state.SessionState.AUTH_SUCCESS:
