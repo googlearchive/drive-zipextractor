@@ -1926,17 +1926,12 @@ zipextractor.View.prototype.updateState = function(newState, oldState, opt_data)
             'the popup window to authorize ZIP Extractor to use Google Drive.)');
             break;            
             
-        case zipextractor.state.SessionState.AUTH_ERROR:
-            this.authButton.disabled = false;
-            this.showEl_(this.authButton, true);
-            this.updatePrimaryStatus_(true, false, 'Authorization error (' + opt_data + '). Please authorize manually by clicking "Authorize" below.');
-            break;            
-            
         case zipextractor.state.SessionState.AUTH_SUCCESS:
             this.authButton.disabled = true;
             this.showEl_(this.authButton, false);
             break;
 
+        case zipextractor.state.SessionState.AUTH_ERROR:
         case zipextractor.state.SessionState.AUTH_REQUIRED:
             this.updatePrimaryStatus_(
                 true, false, 'Please authorize ZIP Extractor to access to Google Drive. ' + 
