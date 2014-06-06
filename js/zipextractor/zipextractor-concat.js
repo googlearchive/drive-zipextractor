@@ -345,7 +345,8 @@ zipextractor.Presenter.prototype.authorize_ = function(isInvokedByApp) {
 
     this.authManager_.authorize(
         isInvokedByApp, 
-        zipextractor.util.bindFn(this.handleAuthResult_, this));
+        zipextractor.util.bindFn(this.handleAuthResult_, this),
+        this.urlStateParser_.getUserId());
 };
  
  
