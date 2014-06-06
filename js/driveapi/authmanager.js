@@ -25,15 +25,16 @@ driveapi.AuthManager = function(appConfig) {
 };
 
 
-driveapi.AuthManager.prototype.authorize = function(isImmediate, authResultCallback, opt_loginHint) {
+driveapi.AuthManager.prototype.authorize = function(isImmediate, authResultCallback, opt_userId) {
     var authParams = {
         'client_id': this.appConfig_.getClientId(), 
         'scope': this.appConfig_.getScopes(),
         'immediate': isImmediate
     };
     
-    if (opt_loginHint) {
-      authParams['login_hint'] = opt_loginHint;
+    if (opt_userId) {
+      authParams['login_hint'] = opt_userId;
+      authParams['authuser'] = -1;
     }
     
     try {
