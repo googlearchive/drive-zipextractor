@@ -274,7 +274,7 @@ driveapi.FileManager.prototype.sendXhr_ = function(method, baseUrl, params, body
     };
     if (callbacks[driveapi.FileManager.CallbackType_.PROGRESS]) {            
         var progressFn = function(e) {
-            if (e && e.lengthComputable) {
+            if (e) {
                 var current = e.position || e.loaded;
                 var total = e.totalSize || e.total;        
                 self.invokeCallback_(callbacks, driveapi.FileManager.CallbackType_.PROGRESS, current, total);       

@@ -216,10 +216,11 @@ zipextractor.Presenter.prototype.downloadFileById_ = function(id) {
 
 zipextractor.Presenter.prototype.downloadFile_ = function(file) {
     this.setState_(zipextractor.state.SessionState.DOWNLOADING, file);
+    var fileSize = file.fileSize ? parseInt(file.fileSize, 10) : -1;
     var callbacks = this.fileManager_.generateCallbacks(
         zipextractor.util.bindFn(this.onDownloadSuccess_, this),
         zipextractor.util.bindFn(this.onDownloadError_, this),
-        zipextractor.util.bindFn(this.onDownloadProgress_, this),
+        zipextractor.util.bindFn(this.onDownloadProgress_, this, fileSize),
         zipextractor.util.bindFn(this.onDownloadAborted_, this));
 
     this.fileManager_.downloadFile(file, callbacks);
@@ -253,16 +254,18 @@ zipextractor.Presenter.prototype.onDownloadError_ = function(error, message) {
 };
 
 
-zipextractor.Presenter.prototype.onDownloadProgress_ = function(current, total) {
+zipextractor.Presenter.prototype.onDownloadProgress_ = function(fileSize, current, total) {
     // Don't show latent progress events that come in after download has been cancelled.
     if (this.state_ == zipextractor.state.SessionState.DOWNLOAD_CANCELED) {
       return;
     }
     
-    this.view_.handleDownloadProgress(current, total);
-    
-    if (current === total) {
+    if (fileSize != -1) {
+      this.view_.handleDownloadProgress(current, fileSize);
+
+      if (current === fileSize) {
         this.setState_(zipextractor.state.SessionState.DOWNLOAD_ALL_BYTES_TRANSFERRED);
+      }
     }
 };
 
