@@ -25,7 +25,7 @@ Note: The resulting App ID, Client ID, and API Key generated as part of that pro
 For any questions about ZIP Extractor, please email zipextractor@gmail.com.
 
 For technical questions about the Google Drive API, you can post to the Google Drive Developers G+ community:
-https://plus.sandbox.google.com/communities/107264319205603895037.
+https://plus.google.com/communities/107264319205603895037
 
 You can also post a question on the Stack Overflow forums:
 http://stackoverflow.com/questions/tagged/google-drive-sdk
