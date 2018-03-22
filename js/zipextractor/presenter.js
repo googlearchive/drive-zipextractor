@@ -40,6 +40,7 @@ zipextractor.Presenter = function(appConfig) {
 
     this.state_ = zipextractor.state.SessionState.DEFAULT;    
 
+    this.shareClient_ = null;
     this.htmlBodyLoaded_ = false;
     this.apiLoaded_ = false;
     this.sharingLoaded_ = false;
@@ -119,9 +120,11 @@ zipextractor.Presenter.prototype.sharingLoadComplete_ = function() {
 
 // TODO: Should this be in the view?
 zipextractor.Presenter.prototype.showSharingDialog_ = function(id) {
-    var sharingDialog = new gapi.drive.share.ShareClient(this.appConfig_.getAppId());
-    sharingDialog.setItemIds([id]);
-    sharingDialog.showSettingsDialog();
+    if (!this.shareClient_) {
+        this.shareClient_ = new gapi.drive.share.ShareClient(this.appConfig_.getAppId());
+    }
+    this.shareClient_.setItemIds([id]);
+    this.shareClient_.showSettingsDialog();
 };
 
 zipextractor.Presenter.prototype.checkBrowser_ = function() {
