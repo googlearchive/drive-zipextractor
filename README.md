@@ -2,7 +2,7 @@
 
 Extract (decompress) ZIP files into Google Drive using the Google Drive API.
 
-This app is deployed at: http://zip-extractor.appspot.com/. Download the extension in the [Chrome Web Store](https://chrome.google.com/webstore/detail/zip-extractor/mmfcakoljjhncfphlflcedhgogfhpbcd?hl=en-US).
+This app is deployed at: https://zipextractor.app/. Download the extension in the [Chrome Web Store](https://chrome.google.com/webstore/detail/zip-extractor/mmfcakoljjhncfphlflcedhgogfhpbcd?hl=en-US).
 
 ![](https://lh3.googleusercontent.com/gRv-MgMtf1a2z22P1nLatu8Y7VdNU4sjrXKY36twawlkK-uuf_mnzyS9wZir_PDKbG2VjvxYE_s=w640-h400-e365)
 
