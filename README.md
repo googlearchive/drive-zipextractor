@@ -1,3 +1,7 @@
+# Deprecated
+
+This sample is no longer maintained. No further updates will be made.
+
 # ZIP Extractor
 
 Sample app for extracting ZIP files into Google Drive using the Google Drive API.
@@ -23,3 +27,6 @@ https://developers.google.com/drive/api/v3/enable-sdk
 
 For any questions about the Drive API, you can also post a question on the Stack Overflow forums:
 http://stackoverflow.com/questions/tagged/google-drive-sdk
+
+Note: This is not an official Google product.
+
